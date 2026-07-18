@@ -100,7 +100,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 24px;
+      justify-content: flex-end;
       position: relative;
       z-index: 1;
     }
@@ -140,6 +140,12 @@
       color: var(--danger);
     }
 
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+
     .stats {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -168,11 +174,32 @@
       font-size: 28px;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-      gap: 22px;
+    .wall-section {
       margin-top: 24px;
+      padding: 26px;
+      background: rgba(255, 250, 242, 0.82);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .wall-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 20px;
+    }
+
+    .wall-head h2 {
+      margin: 0;
+      font-size: 27px;
+    }
+
+    .wall-head p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
     }
 
     .panel {
@@ -202,7 +229,12 @@
       padding: 24px;
     }
 
-    .board,
+    .board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
     .queue {
       display: grid;
       gap: 14px;
@@ -417,6 +449,67 @@
       font-weight: 700;
     }
 
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(18, 26, 42, 0.58);
+      backdrop-filter: blur(8px);
+      z-index: 50;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: min(760px, 100%);
+      max-height: min(88vh, 920px);
+      overflow: auto;
+      background: var(--paper);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(10, 18, 30, 0.28);
+      animation: rise 0.3s ease;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 24px 24px 0;
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .modal-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .close-btn {
+      flex: 0 0 auto;
+      padding: 8px 13px;
+      font-size: 22px;
+      line-height: 1;
+    }
+
     @keyframes rise {
       from {
         opacity: 0;
@@ -430,10 +523,6 @@
     }
 
     @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
       .stats,
       .dashboard-grid {
         grid-template-columns: 1fr;
@@ -446,6 +535,18 @@
       .hero-top,
       .card-top {
         flex-direction: column;
+      }
+
+      .hero-actions {
+        justify-content: flex-start;
+      }
+
+      .wall-section {
+        padding: 20px;
+      }
+
+      .modal {
+        padding: 12px;
       }
     }
   </style>
@@ -463,12 +564,10 @@
             승인된 시뮬레이션만 공개 보드에 올라가도록 구성했습니다.
           </p>
         </div>
-      </div>
-      <div class="hero-actions">
-        <button class="btn btn-primary" type="button"
-          onclick="document.getElementById('applyForm').scrollIntoView({behavior: 'smooth'})">업로드 신청하기</button>
-        <button class="btn btn-secondary" type="button"
-          onclick="document.getElementById('teacherPanel').scrollIntoView({behavior: 'smooth'})">교사 승인 화면</button>
+        <div class="hero-actions">
+          <button class="btn btn-primary" type="button" id="openApplyBtn">신청하기</button>
+          <button class="btn btn-secondary" type="button" id="openAdminBtn">관리자</button>
+        </div>
       </div>
       <div class="stats">
         <div class="stat">
@@ -486,80 +585,86 @@
       </div>
     </section>
 
-    <div class="grid">
-      <section class="panel">
-        <div class="panel-head">
-          <h2>공개 시뮬레이션 보드</h2>
-          <p>교사가 승인한 작품만 여기에 보입니다. 파일은 바로 열어볼 수 있고, HTML 안의 대표 이미지는 자동 썸네일로 사용됩니다.</p>
+    <section class="wall-section">
+      <div class="wall-head">
+        <div>
+          <h2>학생 시뮬레이션 담벼락</h2>
+          <p>교사가 승인한 작품만 공개됩니다. 카드를 눌러 학생들의 시뮬레이션을 살펴보세요.</p>
         </div>
-        <div class="panel-body">
-          <div class="board" id="approvedBoard"></div>
-        </div>
-      </section>
+      </div>
+      <div class="board" id="approvedBoard"></div>
+    </section>
+  </div>
 
-      <section class="panel" id="applyForm">
-        <div class="panel-head">
-          <h2>학생 업로드 신청</h2>
+  <div class="modal" id="applyModal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="applyTitle">
+      <div class="modal-head">
+        <div>
+          <h2 id="applyTitle">학생 업로드 신청</h2>
           <p>제출하면 바로 공개되지 않고, 교사가 검토한 뒤 승인해야 게시됩니다.</p>
         </div>
-        <div class="panel-body">
-          <form id="submissionForm">
-            <div class="field">
-              <label for="studentName">학생 이름</label>
-              <input id="studentName" name="studentName" type="text" placeholder="예: 김하늘" required>
-            </div>
-            <div class="field">
-              <label for="className">학급 / 모둠</label>
-              <input id="className" name="className" type="text" placeholder="예: 2학년 3반 / 4모둠" required>
-            </div>
-            <div class="field">
-              <label for="simulationTitle">시뮬레이션 제목</label>
-              <input id="simulationTitle" name="simulationTitle" type="text" placeholder="예: 빛의 굴절 실험기" required>
-            </div>
-            <div class="field">
-              <label for="subject">과목</label>
-              <select id="subject" name="subject" required>
-                <option value="">과목 선택</option>
-                <option value="과학">과학</option>
-                <option value="수학">수학</option>
-                <option value="정보">정보</option>
-                <option value="융합">융합</option>
-                <option value="기타">기타</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="simulationFile">시뮬레이션 파일</label>
-              <input id="simulationFile" name="simulationFile" type="file" accept=".html,.htm,image/*" required>
-              <div class="help">HTML 파일이나 이미지 파일을 올릴 수 있습니다. HTML 파일은 내부의 대표 이미지나 첫 번째 이미지를 자동으로 썸네일로 사용합니다.</div>
-            </div>
-            <div class="field">
-              <label for="simulationUrl">외부 실행 링크</label>
-              <input id="simulationUrl" name="simulationUrl" type="url"
-                placeholder="선택 사항: https://example.com/simulation">
-            </div>
-            <div class="field">
-              <label for="summary">작품 소개</label>
-              <textarea id="summary" name="summary" placeholder="무엇을 구현했고, 어떻게 사용하면 되는지 적어 주세요." required></textarea>
-            </div>
-            <div class="field">
-              <label for="teacherMessage">교사에게 남길 메모</label>
-              <textarea id="teacherMessage" name="teacherMessage" placeholder="검토 시 참고할 내용이 있으면 적어 주세요."></textarea>
-            </div>
-            <button class="btn btn-primary" type="submit">업로드 신청 제출</button>
-          </form>
-          <div class="status-box" id="submissionStatus">아직 제출된 신청이 없습니다.</div>
-          <p class="help">현재 버전은 브라우저의 localStorage에 저장되는 데모입니다. 같은 브라우저에서만 데이터가 유지되며, 큰 파일은 저장 한도 때문에 업로드되지 않을 수 있습니다.
-          </p>
-        </div>
-      </section>
-    </div>
-
-    <section class="panel" id="teacherPanel" style="margin-top: 22px;">
-      <div class="panel-head">
-        <h2>교사용 관리자 대시보드</h2>
-        <p>비밀번호를 입력하면 승인 대기 항목을 검토하고 승인 또는 반려할 수 있습니다.</p>
+        <button class="btn btn-ghost close-btn" type="button" data-close-modal="applyModal" aria-label="닫기">×</button>
       </div>
-      <div class="panel-body">
+      <div class="modal-body">
+        <form id="submissionForm">
+          <div class="field">
+            <label for="studentName">학생 이름</label>
+            <input id="studentName" name="studentName" type="text" placeholder="예: 김하늘" required>
+          </div>
+          <div class="field">
+            <label for="className">학급 / 모둠</label>
+            <input id="className" name="className" type="text" placeholder="예: 2학년 3반 / 4모둠" required>
+          </div>
+          <div class="field">
+            <label for="simulationTitle">시뮬레이션 제목</label>
+            <input id="simulationTitle" name="simulationTitle" type="text" placeholder="예: 빛의 굴절 실험기" required>
+          </div>
+          <div class="field">
+            <label for="subject">과목</label>
+            <select id="subject" name="subject" required>
+              <option value="">과목 선택</option>
+              <option value="과학">과학</option>
+              <option value="수학">수학</option>
+              <option value="정보">정보</option>
+              <option value="융합">융합</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="simulationFile">시뮬레이션 파일</label>
+            <input id="simulationFile" name="simulationFile" type="file" accept=".html,.htm,image/*" required>
+            <div class="help">HTML 파일이나 이미지 파일을 올릴 수 있습니다. HTML 파일은 내부의 대표 이미지나 첫 번째 이미지를 자동 썸네일로 사용합니다.</div>
+          </div>
+          <div class="field">
+            <label for="simulationUrl">외부 실행 링크</label>
+            <input id="simulationUrl" name="simulationUrl" type="url" placeholder="선택 사항: https://example.com/simulation">
+          </div>
+          <div class="field">
+            <label for="summary">작품 소개</label>
+            <textarea id="summary" name="summary" placeholder="무엇을 구현했고, 어떻게 사용하면 되는지 적어 주세요." required></textarea>
+          </div>
+          <div class="field">
+            <label for="teacherMessage">교사에게 남길 메모</label>
+            <textarea id="teacherMessage" name="teacherMessage" placeholder="검토 시 참고할 내용이 있으면 적어 주세요."></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">업로드 신청 제출</button>
+        </form>
+        <div class="status-box" id="submissionStatus">아직 제출된 신청이 없습니다.</div>
+        <p class="help">현재 버전은 브라우저의 localStorage에 저장되는 데모입니다. 같은 브라우저에서만 데이터가 유지되며, 큰 파일은 저장 한도 때문에 업로드되지 않을 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="adminModal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+      <div class="modal-head">
+        <div>
+          <h2 id="adminTitle">교사용 관리자</h2>
+          <p>비밀번호를 입력하면 승인 대기 항목을 검토하고 승인 또는 반려할 수 있습니다.</p>
+        </div>
+        <button class="btn btn-ghost close-btn" type="button" data-close-modal="adminModal" aria-label="닫기">×</button>
+      </div>
+      <div class="modal-body">
         <div class="admin-entry">
           <input id="adminPassword" type="password" placeholder="교사용 비밀번호 입력">
           <button class="btn btn-primary" type="button" id="adminLoginBtn">관리자 열기</button>
@@ -578,11 +683,11 @@
               <strong id="dashboardApproved">0</strong>
             </div>
           </div>
-          <div class="small">승인하면 공개 보드에 즉시 반영되고, 반려하면 기록은 남되 공개되지 않습니다.</div>
+          <div class="small">승인하면 공개 담벼락에 즉시 반영되고, 반려하면 기록은 남되 공개되지 않습니다.</div>
           <div class="queue" id="pendingQueue"></div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 
   <script>
@@ -635,6 +740,22 @@
     const adminPasswordInput = document.getElementById("adminPassword");
 
     let isAdminOpen = false;
+    const applyModal = document.getElementById("applyModal");
+    const adminModal = document.getElementById("adminModal");
+
+    function openModal(modal) {
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeModal(modal) {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      if (!document.querySelector(".modal.show")) {
+        document.body.classList.remove("modal-open");
+      }
+    }
 
     function getNowStamp() {
       const now = new Date();
@@ -854,6 +975,7 @@
           </div>
         `)
         .join("");
+
     }
 
     function updateSummary(items) {
@@ -913,6 +1035,7 @@
 
         submissionStatus.textContent = `${newItem.studentName} 학생의 "${newItem.simulationTitle}" 신청이 접수되었습니다. 현재 상태는 승인 대기입니다.`;
         renderAll();
+        closeModal(applyModal);
       } catch (error) {
         console.error(error);
         if (error instanceof DOMException || /quota/i.test(String(error?.message))) {
@@ -921,6 +1044,32 @@
         }
         submissionStatus.textContent = `업로드 처리 중 오류가 발생했습니다: ${error.message}`;
       }
+    });
+
+    document.getElementById("openApplyBtn").addEventListener("click", () => {
+      openModal(applyModal);
+    });
+
+    document.getElementById("openAdminBtn").addEventListener("click", () => {
+      openModal(adminModal);
+      window.setTimeout(() => adminPasswordInput.focus(), 80);
+    });
+
+    document.querySelectorAll("[data-close-modal]").forEach(button => {
+      button.addEventListener("click", () => {
+        closeModal(document.getElementById(button.dataset.closeModal));
+      });
+    });
+
+    [applyModal, adminModal].forEach(modal => {
+      modal.addEventListener("click", event => {
+        if (event.target === modal) closeModal(modal);
+      });
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key !== "Escape") return;
+      document.querySelectorAll(".modal.show").forEach(closeModal);
     });
 
     document.getElementById("adminLoginBtn").addEventListener("click", () => {
@@ -941,6 +1090,7 @@
       adminPasswordInput.value = "";
       dashboard.classList.remove("show");
       adminStatus.textContent = "관리자 화면을 닫았습니다.";
+      closeModal(adminModal);
     });
 
     pendingQueue.addEventListener("click", event => {
