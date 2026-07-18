@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>학생 시뮬레이션 허브</title>
+  <title>에너지 오개념 진단소</title>
   <style>
     :root {
       --bg: #f4efe7;
@@ -36,7 +36,7 @@
     }
 
     .shell {
-      width: min(1180px, calc(100% - 32px));
+      width: min(920px, calc(100% - 32px));
       margin: 0 auto;
       padding: 32px 0 56px;
     }
@@ -84,25 +84,16 @@
 
     h1 {
       margin: 16px 0 12px;
-      font-size: clamp(32px, 5vw, 54px);
-      line-height: 1.05;
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.1;
     }
 
     .hero p {
-      max-width: 760px;
+      max-width: 640px;
       margin: 0;
       font-size: 16px;
       line-height: 1.7;
       color: rgba(255, 253, 248, 0.86);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: flex-end;
-      position: relative;
-      z-index: 1;
     }
 
     .btn {
@@ -135,74 +126,29 @@
       color: var(--navy);
     }
 
-    .btn-danger {
-      background: #fbe8e5;
-      color: var(--danger);
-    }
-
     .btn-ghost {
       background: transparent;
       color: var(--muted);
       border: 1px solid var(--line);
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 28px;
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
       position: relative;
       z-index: 1;
     }
 
-    .stat {
-      padding: 18px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(10px);
-    }
-
-    .stat-label {
-      font-size: 13px;
-      color: rgba(255, 253, 248, 0.7);
-    }
-
-    .stat strong {
-      display: block;
-      margin-top: 8px;
-      font-size: 28px;
-    }
-
-    .wall-section {
-      margin-top: 24px;
-      padding: 26px;
-      background: rgba(255, 250, 242, 0.82);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .wall-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      align-items: end;
-      margin-bottom: 20px;
-    }
-
-    .wall-head h2 {
-      margin: 0;
-      font-size: 27px;
-    }
-
-    .wall-head p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
     .panel {
+      margin-top: 24px;
       background: var(--paper);
       border: 1px solid var(--line);
       border-radius: 28px;
@@ -216,7 +162,7 @@
 
     .panel-head h2 {
       margin: 0;
-      font-size: 24px;
+      font-size: 23px;
     }
 
     .panel-head p {
@@ -227,100 +173,6 @@
 
     .panel-body {
       padding: 24px;
-    }
-
-    .board {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
-
-    .queue {
-      display: grid;
-      gap: 14px;
-    }
-
-    .card,
-    .queue-item {
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: white;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .card:hover,
-    .queue-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 36px rgba(31, 54, 92, 0.08);
-    }
-
-    .thumb {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-      border-radius: 18px;
-      margin-bottom: 16px;
-      border: 1px solid var(--line);
-      background: #f4efe7;
-    }
-
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .badge-approved {
-      background: #dbf4ec;
-      color: #116454;
-    }
-
-    .badge-pending {
-      background: #fff0cc;
-      color: #8c6500;
-    }
-
-    .badge-rejected {
-      background: #fde2df;
-      color: #9a3028;
-    }
-
-    .meta {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .link-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-      align-items: center;
-    }
-
-    .link-row a {
-      color: var(--brand-deep);
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .link-row a:hover {
-      text-decoration: underline;
     }
 
     form {
@@ -339,7 +191,6 @@
     }
 
     input,
-    textarea,
     select {
       width: 100%;
       border: 1px solid var(--line);
@@ -351,13 +202,7 @@
       outline: none;
     }
 
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
     input:focus,
-    textarea:focus,
     select:focus {
       border-color: rgba(217, 93, 57, 0.55);
       box-shadow: 0 0 0 4px rgba(217, 93, 57, 0.12);
@@ -369,58 +214,171 @@
       line-height: 1.5;
     }
 
-    .status-box {
-      margin-top: 14px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      background: #f6efe2;
-      color: var(--navy);
-      font-size: 14px;
-      line-height: 1.6;
-      min-height: 52px;
+    .progress-track {
+      height: 8px;
+      border-radius: 999px;
+      background: #eee3d1;
+      overflow: hidden;
+      margin: 4px 0 4px;
     }
 
-    .admin-entry {
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--brand));
+      width: 0%;
+      transition: width 0.25s ease;
+    }
+
+    .progress-label {
+      font-size: 13px;
+      color: var(--muted);
       display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      flex-wrap: wrap;
+      justify-content: space-between;
     }
 
-    .admin-entry input {
-      flex: 1 1 220px;
+    .question-card {
+      margin-top: 18px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: white;
     }
 
-    .dashboard {
-      margin-top: 28px;
-      padding-top: 24px;
-      border-top: 1px solid var(--line);
-      display: none;
-      animation: rise 0.35s ease;
+    .question-tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f3ead7;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
-    .dashboard.show {
-      display: block;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+    .question-text {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.5;
       margin-bottom: 16px;
     }
 
-    .dashboard-stat {
-      padding: 16px;
+    .option-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .option:hover {
+      border-color: rgba(217, 93, 57, 0.45);
+      background: #fdf6ec;
+    }
+
+    .option input {
+      width: auto;
+      margin-top: 3px;
+      accent-color: var(--brand);
+    }
+
+    .option.selected {
+      border-color: var(--brand);
+      background: #fdf1e9;
+    }
+
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .result-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .result-stat {
+      padding: 18px;
       border-radius: 18px;
       background: white;
       border: 1px solid var(--line);
+      text-align: center;
     }
 
-    .dashboard-stat strong {
+    .result-stat span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .result-stat strong {
       display: block;
-      margin-top: 8px;
+      margin-top: 6px;
       font-size: 26px;
+    }
+
+    .misconception-card {
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      margin-bottom: 12px;
+      background: white;
+    }
+
+    .misconception-card.hit {
+      border-color: rgba(182, 64, 64, 0.4);
+      background: #fdf1ef;
+    }
+
+    .misconception-card.clear {
+      border-color: rgba(47, 127, 115, 0.35);
+      background: #f0f8f5;
+    }
+
+    .misconception-title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .pill {
+      display: inline-flex;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .pill-hit {
+      background: #fbe8e5;
+      color: var(--danger);
+    }
+
+    .pill-clear {
+      background: #dbf4ec;
+      color: #116454;
+    }
+
+    .misconception-text {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+
+    .misconception-text b {
+      color: var(--navy);
     }
 
     .empty {
@@ -437,116 +395,204 @@
       line-height: 1.6;
     }
 
-    .file-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: #f3ead7;
+    .admin-entry {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .admin-entry input {
+      flex: 1 1 220px;
+    }
+
+    .status-box {
+      margin-top: 4px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: #f6efe2;
       color: var(--navy);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .dashboard {
+      display: none;
+    }
+
+    .dashboard.show {
+      display: block;
+    }
+
+    .freq-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 60px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .freq-bar-track {
+      height: 12px;
+      border-radius: 999px;
+      background: #eee3d1;
+      overflow: hidden;
+    }
+
+    .freq-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--brand));
+    }
+
+    .roster {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .roster-item {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 26px 0;
+    }
+
+    .references-box {
+      margin-top: 14px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #fffdf8;
+    }
+
+    .references-box summary {
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fffdf8;
+    }
+
+    .references-body {
+      margin-top: 10px;
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: rgba(255, 253, 248, 0.86);
+    }
+
+    .references-body ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .category-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 22px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .category-label .small {
+      font-weight: 400;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .toolbar-right {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .class-select {
+      max-width: 220px;
+    }
+
+    .roster-item {
+      cursor: pointer;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .roster-item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .roster-detail {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      display: none;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .roster-detail.show {
+      display: flex;
+    }
+
+    .tag-chip {
+      display: inline-flex;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #fbe8e5;
+      color: var(--danger);
       font-size: 12px;
       font-weight: 700;
     }
 
-    body.modal-open {
-      overflow: hidden;
+    .tag-chip.none {
+      background: #dbf4ec;
+      color: #116454;
     }
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: rgba(18, 26, 42, 0.58);
-      backdrop-filter: blur(8px);
-      z-index: 50;
-    }
-
-    .modal.show {
-      display: flex;
-    }
-
-    .modal-panel {
-      width: min(760px, 100%);
-      max-height: min(88vh, 920px);
-      overflow: auto;
-      background: var(--paper);
-      border: 1px solid rgba(255, 255, 255, 0.55);
-      border-radius: 28px;
-      box-shadow: 0 30px 80px rgba(10, 18, 30, 0.28);
-      animation: rise 0.3s ease;
-    }
-
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: flex-start;
-      padding: 24px 24px 0;
-    }
-
-    .modal-head h2 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .modal-head p {
-      margin: 10px 0 0;
+    .caret {
       color: var(--muted);
-      line-height: 1.6;
+      font-size: 13px;
     }
 
-    .modal-body {
-      padding: 24px;
-    }
-
-    .close-btn {
-      flex: 0 0 auto;
-      padding: 8px 13px;
-      font-size: 22px;
-      line-height: 1;
-    }
-
-    @keyframes rise {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
+    @media (max-width: 700px) {
+      .result-summary {
+        grid-template-columns: 1fr;
       }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 900px) {
-      .stats,
-      .dashboard-grid {
+      .freq-row {
         grid-template-columns: 1fr;
       }
 
       .hero {
-        padding: 26px;
-      }
-
-      .hero-top,
-      .card-top {
-        flex-direction: column;
-      }
-
-      .hero-actions {
-        justify-content: flex-start;
-      }
-
-      .wall-section {
-        padding: 20px;
-      }
-
-      .modal {
-        padding: 12px;
+        padding: 24px;
       }
     }
   </style>
@@ -557,233 +603,306 @@
     <section class="hero">
       <div class="hero-top">
         <div>
-          <div class="eyebrow">학생 시뮬레이션 허브</div>
-          <h1>시뮬레이션 전시관</h1>
+          <div class="eyebrow">에너지 단원 사전 진단</div>
+          <h1>에너지 오개념 진단소</h1>
           <p>
-            학생은 먼저 업로드 신청서를 제출하고, 교사는 관리자 대시보드에서 검토한 뒤 승인합니다.
-            승인된 시뮬레이션만 공개 보드에 올라가도록 구성했습니다.
+            10개의 짧은 문항으로 에너지에 대해 흔히 갖는 오개념을 스스로 점검해 봅니다.
+            정답을 맞히는 시험이 아니라, 내가 어떤 생각을 갖고 있는지 확인하는 진단이니 솔직하게 골라 주세요.
           </p>
         </div>
-        <div class="hero-actions">
-          <button class="btn btn-primary" type="button" id="openApplyBtn">신청하기</button>
-          <button class="btn btn-secondary" type="button" id="openAdminBtn">관리자</button>
-        </div>
       </div>
-      <div class="stats">
-        <div class="stat">
-          <span class="stat-label">공개된 시뮬레이션</span>
-          <strong id="approvedCount">0</strong>
-        </div>
-        <div class="stat">
-          <span class="stat-label">승인 대기</span>
-          <strong id="pendingCount">0</strong>
-        </div>
-        <div class="stat">
-          <span class="stat-label">최근 신청자</span>
-          <strong id="latestStudent">-</strong>
-        </div>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" id="openTeacherBtn">교사용 결과 보기</button>
       </div>
     </section>
 
-    <section class="wall-section">
-      <div class="wall-head">
-        <div>
-          <h2>학생 시뮬레이션 담벼락</h2>
-          <p>교사가 승인한 작품만 공개됩니다. 카드를 눌러 학생들의 시뮬레이션을 살펴보세요.</p>
-        </div>
+    <details class="references-box">
+      <summary>이 진단 문항의 학술적 근거 보기</summary>
+      <div class="references-body">
+        <p>각 문항은 과학교육 분야에서 보고된 에너지 오개념 유형(대안적 개념 프레임워크)을 바탕으로 구성했습니다.</p>
+        <ul>
+          <li>Watts, D. M. (1983). Some alternative views of energy. <i>Physics Education</i>, 18(5), 213–217.</li>
+          <li>Duit, R. (1984). Learning the energy concept in school: Empirical results from The Philippines and West Germany. <i>Physics Education</i>, 19(2), 59–66.</li>
+          <li>Trumper, R. (1990). Being constructive: An alternative approach to the teaching of the energy concept—part one. <i>International Journal of Science Education</i>, 12(4), 343–354.</li>
+          <li>Trumper, R., &amp; Gorsky, P. (1993). Learning about energy: The influence of alternative frameworks, cognitive levels, and closed-mindedness. <i>Journal of Research in Science Teaching</i>, 30(7), 637–648.</li>
+          <li>Neumann, K., Viering, T., Boone, W. J., &amp; Fischer, H. E. (2013). Towards a learning progression of energy. <i>Journal of Research in Science Teaching</i>, 50(2), 162–188.</li>
+          <li>Lawson, R. A., &amp; McDermott, L. C. (1987). Student understanding of the work-energy and impulse-momentum theorems. <i>American Journal of Physics</i>, 55(9), 811–817.</li>
+        </ul>
       </div>
-      <div class="board" id="approvedBoard"></div>
-    </section>
-  </div>
+    </details>
 
-  <div class="modal" id="applyModal" aria-hidden="true">
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="applyTitle">
-      <div class="modal-head">
-        <div>
-          <h2 id="applyTitle">학생 업로드 신청</h2>
-          <p>제출하면 바로 공개되지 않고, 교사가 검토한 뒤 승인해야 게시됩니다.</p>
-        </div>
-        <button class="btn btn-ghost close-btn" type="button" data-close-modal="applyModal" aria-label="닫기">×</button>
+    <!-- 학생 정보 입력 -->
+    <section class="panel" id="introPanel">
+      <div class="panel-head">
+        <h2>시작하기 전에</h2>
+        <p>이름과 학급을 입력하면 진단을 시작할 수 있어요. 문항마다 두 개의 생각 중 나와 더 가까운 쪽을 고르면 됩니다.</p>
       </div>
-      <div class="modal-body">
-        <form id="submissionForm">
+      <div class="panel-body">
+        <form id="introForm">
           <div class="field">
-            <label for="studentName">학생 이름</label>
-            <input id="studentName" name="studentName" type="text" placeholder="예: 김하늘" required>
+            <label for="studentName">이름</label>
+            <input id="studentName" type="text" placeholder="예: 김하늘" required>
           </div>
           <div class="field">
-            <label for="className">학급 / 모둠</label>
-            <input id="className" name="className" type="text" placeholder="예: 2학년 3반 / 4모둠" required>
+            <label for="className">학급</label>
+            <input id="className" type="text" placeholder="예: 2학년 3반" required>
           </div>
-          <div class="field">
-            <label for="simulationTitle">시뮬레이션 제목</label>
-            <input id="simulationTitle" name="simulationTitle" type="text" placeholder="예: 빛의 굴절 실험기" required>
-          </div>
-          <div class="field">
-            <label for="subject">과목</label>
-            <select id="subject" name="subject" required>
-              <option value="">과목 선택</option>
-              <option value="과학">과학</option>
-              <option value="수학">수학</option>
-              <option value="정보">정보</option>
-              <option value="융합">융합</option>
-              <option value="기타">기타</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="simulationFile">시뮬레이션 파일</label>
-            <input id="simulationFile" name="simulationFile" type="file" accept=".html,.htm,image/*" required>
-            <div class="help">HTML 파일이나 이미지 파일을 올릴 수 있습니다. HTML 파일은 내부의 대표 이미지나 첫 번째 이미지를 자동 썸네일로 사용합니다.</div>
-          </div>
-          <div class="field">
-            <label for="simulationUrl">외부 실행 링크</label>
-            <input id="simulationUrl" name="simulationUrl" type="url" placeholder="선택 사항: https://example.com/simulation">
-          </div>
-          <div class="field">
-            <label for="summary">작품 소개</label>
-            <textarea id="summary" name="summary" placeholder="무엇을 구현했고, 어떻게 사용하면 되는지 적어 주세요." required></textarea>
-          </div>
-          <div class="field">
-            <label for="teacherMessage">교사에게 남길 메모</label>
-            <textarea id="teacherMessage" name="teacherMessage" placeholder="검토 시 참고할 내용이 있으면 적어 주세요."></textarea>
-          </div>
-          <button class="btn btn-primary" type="submit">업로드 신청 제출</button>
+          <button class="btn btn-primary" type="submit">진단 시작하기</button>
         </form>
-        <div class="status-box" id="submissionStatus">아직 제출된 신청이 없습니다.</div>
-        <p class="help">현재 버전은 브라우저의 localStorage에 저장되는 데모입니다. 같은 브라우저에서만 데이터가 유지되며, 큰 파일은 저장 한도 때문에 업로드되지 않을 수 있습니다.</p>
       </div>
-    </div>
+    </section>
+
+    <!-- 문항 진행 -->
+    <section class="panel hidden" id="quizPanel">
+      <div class="panel-body">
+        <div class="progress-label">
+          <span id="progressText">1 / 8</span>
+          <span id="progressTag"></span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="question-card" id="questionCard"></div>
+        <div class="quiz-nav">
+          <button class="btn btn-ghost" type="button" id="prevBtn">이전</button>
+          <button class="btn btn-primary" type="button" id="nextBtn" disabled>다음</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 결과 -->
+    <section class="panel hidden" id="resultPanel">
+      <div class="panel-head">
+        <h2>진단 결과</h2>
+        <p id="resultIntro"></p>
+      </div>
+      <div class="panel-body">
+        <div class="result-summary">
+          <div class="result-stat">
+            <span>과학적으로 정확히 답한 문항</span>
+            <strong id="scoreCorrect">0 / 8</strong>
+          </div>
+          <div class="result-stat">
+            <span>발견된 오개념 유형</span>
+            <strong id="scoreMisconceptions">0개</strong>
+          </div>
+          <div class="result-stat">
+            <span>진단 학생</span>
+            <strong id="scoreName">-</strong>
+          </div>
+        </div>
+        <div id="misconceptionList"></div>
+        <hr class="section-divider">
+        <p class="small">이 결과는 이 브라우저(localStorage)에 저장되어, 교사가 "교사용 결과 보기"에서 학급 전체 통계를 확인할 수 있습니다.</p>
+        <button class="btn btn-soft" type="button" id="retakeBtn">다시 진단하기</button>
+      </div>
+    </section>
   </div>
 
-  <div class="modal" id="adminModal" aria-hidden="true">
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
-      <div class="modal-head">
+  <!-- 교사용 모달 -->
+  <div class="modal-backdrop hidden" id="teacherModal" style="position:fixed;inset:0;background:rgba(18,26,42,0.58);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50;">
+    <div style="width:min(880px,100%);max-height:min(88vh,920px);overflow:auto;background:var(--paper);border:1px solid rgba(255,255,255,0.55);border-radius:28px;box-shadow:0 30px 80px rgba(10,18,30,0.28);">
+      <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:24px 24px 0;">
         <div>
-          <h2 id="adminTitle">교사용 관리자</h2>
-          <p>비밀번호를 입력하면 승인 대기 항목을 검토하고 승인 또는 반려할 수 있습니다.</p>
+          <h2 style="margin:0;font-size:24px;">교사용 학급 결과</h2>
+          <p style="margin:10px 0 0;color:var(--muted);line-height:1.6;">비밀번호를 입력하면 학생들이 어떤 오개념을 얼마나 갖고 있는지 확인할 수 있습니다.</p>
         </div>
-        <button class="btn btn-ghost close-btn" type="button" data-close-modal="adminModal" aria-label="닫기">×</button>
+        <button class="btn btn-ghost" type="button" id="closeTeacherBtn" style="flex:0 0 auto;padding:8px 13px;font-size:22px;line-height:1;">×</button>
       </div>
-      <div class="modal-body">
+      <div style="padding:24px;">
         <div class="admin-entry">
-          <input id="adminPassword" type="password" placeholder="교사용 비밀번호 입력">
-          <button class="btn btn-primary" type="button" id="adminLoginBtn">관리자 열기</button>
-          <button class="btn btn-soft" type="button" id="adminLogoutBtn">닫기</button>
+          <input id="teacherPassword" type="password" placeholder="교사용 비밀번호 입력">
+          <button class="btn btn-primary" type="button" id="teacherLoginBtn">결과 열기</button>
+          <button class="btn btn-danger" type="button" id="clearDataBtn" style="background:#fbe8e5;color:var(--danger);">전체 기록 삭제</button>
         </div>
-        <div class="status-box" id="adminStatus">비밀번호 hshs2026을 입력하면 관리자 화면이 열립니다.</div>
+        <div class="status-box" id="teacherStatus">비밀번호 hshs2026을 입력하면 학급 통계가 열립니다.</div>
 
-        <div class="dashboard" id="dashboard">
-          <div class="dashboard-grid">
-            <div class="dashboard-stat">
-              <span class="small">승인 대기 신청</span>
-              <strong id="dashboardPending">0</strong>
+        <div class="dashboard" id="teacherDashboard">
+          <div class="toolbar">
+            <div class="field" style="gap:4px;">
+              <label for="classFilter" style="font-size:12px;">학급 필터</label>
+              <select id="classFilter" class="class-select"></select>
             </div>
-            <div class="dashboard-stat">
-              <span class="small">총 공개 작품</span>
-              <strong id="dashboardApproved">0</strong>
+            <div class="toolbar-right">
+              <span class="small" id="lastUpdatedLabel"></span>
+              <button class="btn btn-soft" type="button" id="exportCsvBtn">CSV로 내보내기</button>
             </div>
           </div>
-          <div class="small">승인하면 공개 담벼락에 즉시 반영되고, 반려하면 기록은 남되 공개되지 않습니다.</div>
-          <div class="queue" id="pendingQueue"></div>
+
+          <div class="result-summary">
+            <div class="result-stat">
+              <span>참여한 학생 수</span>
+              <strong id="teacherTotal">0</strong>
+            </div>
+            <div class="result-stat">
+              <span>평균 정답 수 (정확한 개념 응답)</span>
+              <strong id="teacherAvg">0 / 10</strong>
+            </div>
+            <div class="result-stat">
+              <span>가장 흔한 오개념</span>
+              <strong id="teacherTopMisconception">-</strong>
+            </div>
+          </div>
+
+          <div class="category-label">질적 오개념 프레임워크 <span class="small">(Watts, 1983; Trumper, 1990/1991 등 — 에너지 개념 자체에 대한 사고방식)</span></div>
+          <div id="freqListQualitative"></div>
+
+          <div class="category-label">정량적 계산 오개념 <span class="small">(Lawson &amp; McDermott, 1987 — 운동·위치 에너지 계산 시 질량을 반영하지 못하는 오류)</span></div>
+          <div id="freqListQuantitative"></div>
+
+          <h3 style="margin:26px 0 10px;font-size:18px;">학생별 진단 기록 <span class="small" id="rosterCount"></span></h3>
+          <p class="small">항목을 클릭하면 해당 학생이 어떤 오개념을 보였는지 자세히 볼 수 있습니다.</p>
+          <div class="roster" id="rosterList"></div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY = "simulation-hub-submissions-v2";
-    const ADMIN_PASSWORD = "hshs2026";
+    const STORAGE_KEY = "energy-misconception-records-v1";
+    const TEACHER_PASSWORD = "hshs2026";
 
-    const seedData = [
+    // 각 문항은 에너지 오개념에 관한 과학교육 연구에서 보고된 대안적 개념(alternative conception) 프레임워크를 바탕으로 구성했습니다.
+    // category: "qualitative"(에너지 개념 자체에 대한 사고방식) | "quantitative"(공식 적용 시 나타나는 계산 오류)
+    const RAW_QUESTIONS = [
       {
-        id: crypto.randomUUID(),
-        studentName: "이지안",
-        className: "2학년 1반",
-        simulationTitle: "행성 중력 궤도 시뮬레이터",
-        subject: "과학",
-        simulationUrl: "https://example.com/orbit",
-        fileName: "orbit-sim.html",
-        fileType: "text/html",
-        fileSize: 182400,
-        fileDataUrl: "",
-        thumbnailAuto: createFallbackThumbnail("행성 중력 궤도 시뮬레이터", "과학"),
-        summary: "행성 질량과 속도를 바꾸며 공전 궤도가 어떻게 달라지는지 확인하는 작품입니다.",
-        teacherMessage: "발표 때 질량 변화 실험도 같이 보여줄 예정입니다.",
-        status: "approved",
-        submittedAt: "2026-07-18 09:00"
+        tag: "anthropocentric",
+        category: "qualitative",
+        tagLabel: "인간·생물 중심 오개념",
+        framework: "Watts (1983)의 'human-centred' 프레임워크",
+        text: "산비탈에서 큰 돌이 굴러 내려가고 있습니다. 생명이 없는 이 돌도 에너지를 갖고 있다고 할 수 있을까요?",
+        misconception: "돌은 생물이 아니므로 에너지와 관련이 없다.",
+        correct: "돌도 운동 에너지와 위치 에너지를 갖고 있으며, 이는 생물 여부와 관련 없다.",
+        explain: "에너지를 생물·인간의 활동에만 관련된 것으로 보는 것은 Watts(1983)가 분류한 <b>'인간 중심(human-centred) 오개념'</b>입니다. 에너지는 생물에만 적용되는 개념이 아니라, 움직이거나 높은 곳에 있는 모든 물체가 가질 수 있는 물리량입니다."
       },
       {
-        id: crypto.randomUUID(),
-        studentName: "박서윤",
-        className: "1학년 4반",
-        simulationTitle: "확률 실험 주사위 실험실",
-        subject: "수학",
-        simulationUrl: "https://example.com/dice",
-        fileName: "dice-lab.html",
-        fileType: "text/html",
-        fileSize: 165700,
-        fileDataUrl: "",
-        thumbnailAuto: createFallbackThumbnail("확률 실험 주사위 실험실", "수학"),
-        summary: "주사위를 여러 번 던질 때 평균값과 분포가 어떻게 수렴하는지 보여주는 시뮬레이션입니다.",
-        teacherMessage: "",
-        status: "pending",
-        submittedAt: "2026-07-18 10:20"
+        tag: "ingredient",
+        category: "qualitative",
+        tagLabel: "에너지 물질화(재료) 오개념",
+        framework: "Watts (1983) 'ingredient' 모델 / Trumper (1990) 'fuel' 개념",
+        text: "에너지는 우리가 눈으로 직접 보거나 손으로 만질 수 있는 물질과 같은 것일까요?",
+        misconception: "에너지는 연료나 재료처럼 물체 안에 실제로 담겨 있는 물질이다.",
+        correct: "에너지는 물질이 아니라, 일을 할 수 있는 능력을 나타내는 양(量)이다.",
+        explain: "에너지를 연료·재료처럼 물체 속에 들어 있는 물질로 보는 것은 Watts(1983)의 <b>'ingredient(재료) 모델'</b>과 Trumper(1990)가 지적한 오개념입니다. 에너지는 만지거나 담아 둘 수 있는 물질이 아니라, 물체나 계(system)가 가진 '일을 할 수 있는 능력'을 나타내는 물리량입니다."
+      },
+      {
+        tag: "force",
+        category: "qualitative",
+        tagLabel: "힘-에너지 혼동",
+        framework: "Duit (1984); Trumper (1990/1991)의 힘-에너지 혼동",
+        text: "'저 사람은 에너지가 크다'라는 표현에서 과학적으로 '에너지가 크다'는 것은 무엇을 뜻할까요?",
+        misconception: "힘이 세다는 것과 같은 뜻이다.",
+        correct: "힘과는 다른 개념으로, 일을 할 수 있는 능력이 크다는 뜻이다.",
+        explain: "힘과 에너지를 같은 것으로 혼동하는 것은 Duit(1984), Trumper(1990/1991) 등이 보고한 대표적 오개념입니다. <b>에너지는 일을 할 수 있는 능력</b>이고, 힘은 물체의 운동 상태를 변화시키는 작용으로 서로 다른 물리량입니다."
+      },
+      {
+        tag: "obvious-activity",
+        category: "qualitative",
+        tagLabel: "'뚜렷한 활동'으로서의 에너지 오개념",
+        framework: "Watts (1983) 'obvious activity' 모델",
+        text: "책상 위 높은 선반에 정지해 있는 책이 있습니다. 이 책도 에너지를 갖고 있을까요?",
+        misconception: "움직이거나 소리·빛을 내는 등 뚜렷한 활동이 없으니 에너지를 전혀 갖고 있지 않다.",
+        correct: "움직이지 않아도 높은 곳에 있으므로 위치 에너지를 갖고 있다.",
+        explain: "눈에 보이는 움직임·소리·빛 같은 '뚜렷한 활동(obvious activity)'이 있을 때만 에너지가 있다고 보는 것은 Watts(1983)가 분류한 오개념입니다. 에너지는 <b>운동</b>뿐 아니라 <b>위치·상태</b>에도 저장될 수 있어, 정지한 물체도 위치 에너지나 탄성 에너지를 가질 수 있습니다."
+      },
+      {
+        tag: "product",
+        category: "qualitative",
+        tagLabel: "'찌꺼기(산물)'로서의 에너지 오개념",
+        framework: "Watts (1983) 'product' 모델",
+        text: "미끄럼틀을 타고 내려오다가 마찰 때문에 속력이 점점 줄어듭니다. 줄어든 운동 에너지는 어디로 갔을까요?",
+        misconception: "마찰 때문에 그 에너지는 쓸모없이 사라져 버렸다.",
+        correct: "마찰로 인해 마찰열, 즉 열에너지로 바뀌었다.",
+        explain: "마찰열을 에너지가 사라지고 남은 쓸모없는 '찌꺼기(product)'로 보는 것은 Watts(1983)가 분류한 오개념 중 하나입니다. 마찰열은 폐기물이 아니라, 줄어든 운동 에너지만큼 새로 생겨난 <b>열에너지(마찰열)</b>이며 에너지의 형태가 바뀐 것입니다."
+      },
+      {
+        tag: "conservation",
+        category: "qualitative",
+        tagLabel: "에너지 소멸(비보존) 오개념",
+        framework: "Duit (1984); Neumann, Viering, Boone & Fischer (2013)의 degradation/conservation 구분",
+        text: "손전등을 오래 켜두면 배터리가 다 닳아 꺼집니다. 이때 배터리 속 에너지는 어떻게 되었을까요?",
+        misconception: "다 써버려서 완전히 사라져 없어졌다.",
+        correct: "빛·열 등 다른 형태의 에너지로 바뀌어 흩어졌을 뿐, 총량은 사라지지 않았다.",
+        explain: "에너지가 쓰이면 사라진다고 보는 것은 에너지의 '소멸(degradation)'만 보고 '보존(conservation)'은 놓치는 오개념입니다(Duit, 1984; Neumann et al., 2013). 에너지는 사라지지 않고 <b>형태만 바뀌어 총량이 보존</b>됩니다."
+      },
+      {
+        tag: "flow",
+        category: "qualitative",
+        tagLabel: "형태 변화 없는 '흐름' 오개념",
+        framework: "Watts (1983) 'flow' 모델; Neumann et al. (2013)의 전달(transfer)-전환(transformation) 구분",
+        text: "전기 콘센트에서 전등으로 에너지가 전달되어 불이 켜집니다. 이때 에너지는 어떤 모습일까요?",
+        misconception: "전기 에너지가 형태는 그대로 유지된 채 전등까지 흘러갈 뿐이다.",
+        correct: "전등에 도착하는 과정에서 전기 에너지의 일부가 빛과 열 에너지로 형태가 바뀐다.",
+        explain: "에너지가 형태를 바꾸지 않고 액체처럼 흐르기만 한다고 보는 것은 Watts(1983)의 <b>'흐름(flow) 모델'</b>에 해당하는 오개념입니다. 에너지는 한 곳에서 다른 곳으로 <b>전달(transfer)</b>되는 동시에, 형태가 함께 <b>전환(transformation)</b>되는 경우가 많습니다(Neumann et al., 2013)."
+      },
+      {
+        tag: "power",
+        category: "qualitative",
+        tagLabel: "에너지-전력(Power) 혼동",
+        framework: "일반 물리 교육 문헌에서 널리 보고되는 energy-power 혼동",
+        text: "전구에 적힌 '와트(W)' 수치가 크다는 것은 무엇을 의미할까요?",
+        misconception: "그 전구 안에 저장된 에너지의 양이 많다는 뜻이다.",
+        correct: "그 전구가 에너지를 사용하는 속도(전력)가 빠르다는 뜻이며, 저장된 에너지 양과는 다른 개념이다.",
+        explain: "에너지(J)와 전력(W, 에너지를 사용하는 빠르기)을 같은 것으로 혼동하는 것은 흔히 보고되는 오개념입니다. <b>전력은 단위 시간당 에너지 사용량</b>이며, 실제로 사용한 에너지의 총량은 전력과 사용 시간을 모두 고려해야 알 수 있습니다."
+      },
+      {
+        tag: "pe-mass",
+        category: "quantitative",
+        tagLabel: "위치 에너지-질량 무시 오개념",
+        framework: "Lawson & McDermott (1987) 계열의 정량적 오개념 연구",
+        text: "같은 높이에 가벼운 공과 무거운 공이 놓여 있습니다. 두 공의 위치 에너지는 같을까요?",
+        misconception: "높이가 같으므로 위치 에너지도 항상 같다.",
+        correct: "높이가 같아도 질량이 클수록 위치 에너지가 더 크다.",
+        explain: "위치 에너지를 계산할 때 질량 요인을 무시하는 것은 Lawson & McDermott(1987) 등이 지적한 정량적 오개념입니다. 위치 에너지는 <b>질량과 높이 모두</b>에 영향을 받습니다(위치 에너지 = 질량 × 중력가속도 × 높이)."
+      },
+      {
+        tag: "ke-mass",
+        category: "quantitative",
+        tagLabel: "운동 에너지-질량 무시 오개념",
+        framework: "Lawson & McDermott (1987) 계열의 정량적 오개념 연구",
+        text: "가벼운 자동차와 무거운 트럭이 똑같은 속력으로 달리고 있습니다. 두 차의 운동 에너지는 같을까요?",
+        misconception: "속력이 같으므로 운동 에너지도 항상 같다.",
+        correct: "속력이 같아도 질량이 더 큰 트럭의 운동 에너지가 더 크다.",
+        explain: "운동 에너지를 계산할 때 질량 요인을 무시하는 것 역시 Lawson & McDermott(1987)이 지적한 정량적 오개념입니다. 운동 에너지는 <b>질량과 속력의 제곱 모두</b>에 영향을 받습니다(운동 에너지 = 1/2 × 질량 × 속력²)."
       }
     ];
 
-    const approvedBoard = document.getElementById("approvedBoard");
-    const submissionForm = document.getElementById("submissionForm");
-    const submissionStatus = document.getElementById("submissionStatus");
-    const pendingQueue = document.getElementById("pendingQueue");
-    const dashboard = document.getElementById("dashboard");
-    const adminStatus = document.getElementById("adminStatus");
-    const adminPasswordInput = document.getElementById("adminPassword");
+    // 세션마다 오개념/정답 진술의 표시 순서를 섞어 특정 위치(A 또는 B)만 고르는 습관을 방지
+    const QUESTIONS = RAW_QUESTIONS.map(q => {
+      const options = [
+        { key: "misconception", label: q.misconception },
+        { key: "correct", label: q.correct }
+      ];
+      if (Math.random() < 0.5) options.reverse();
+      return { ...q, options };
+    });
 
-    let isAdminOpen = false;
-    const applyModal = document.getElementById("applyModal");
-    const adminModal = document.getElementById("adminModal");
+    const introPanel = document.getElementById("introPanel");
+    const quizPanel = document.getElementById("quizPanel");
+    const resultPanel = document.getElementById("resultPanel");
+    const questionCard = document.getElementById("questionCard");
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
+    const progressTag = document.getElementById("progressTag");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
 
-    function openModal(modal) {
-      modal.classList.add("show");
-      modal.setAttribute("aria-hidden", "false");
-      document.body.classList.add("modal-open");
-    }
+    let student = { name: "", className: "" };
+    let currentIndex = 0;
+    const answers = new Array(QUESTIONS.length).fill(null); // "misconception" | "correct"
 
-    function closeModal(modal) {
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden", "true");
-      if (!document.querySelector(".modal.show")) {
-        document.body.classList.remove("modal-open");
-      }
-    }
-
-    function getNowStamp() {
-      const now = new Date();
-      const yyyy = now.getFullYear();
-      const mm = String(now.getMonth() + 1).padStart(2, "0");
-      const dd = String(now.getDate()).padStart(2, "0");
-      const hh = String(now.getHours()).padStart(2, "0");
-      const mi = String(now.getMinutes()).padStart(2, "0");
-      return `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
-    }
-
-    function loadSubmissions() {
+    function loadRecords() {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(seedData));
-        return [...seedData];
-      }
-
+      if (!stored) return [];
       try {
         return JSON.parse(stored);
       } catch (error) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(seedData));
-        return [...seedData];
+        return [];
       }
     }
 
-    function saveSubmissions(items) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    function saveRecords(records) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
     }
 
     function escapeHtml(value) {
@@ -795,320 +914,335 @@
         .replace(/'/g, "&#039;");
     }
 
-    function statusLabel(status) {
-      if (status === "approved") return "승인됨";
-      if (status === "rejected") return "반려됨";
-      return "승인 대기";
-    }
-
-    function statusClass(status) {
-      if (status === "approved") return "badge-approved";
-      if (status === "rejected") return "badge-rejected";
-      return "badge-pending";
-    }
-
-    function formatBytes(bytes) {
-      if (!bytes) return "파일 크기 정보 없음";
-      if (bytes < 1024) return `${bytes} B`;
-      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-    }
-
-    function fileToDataUrl(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error("파일을 읽지 못했습니다."));
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function fileToText(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error("HTML 파일을 읽지 못했습니다."));
-        reader.readAsText(file, "utf-8");
-      });
-    }
-
-    function createFallbackThumbnail(title, subject) {
-      const safeTitle = escapeHtml(title || "시뮬레이션");
-      const safeSubject = escapeHtml(subject || "학생 작품");
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
-          <defs>
-            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0%" stop-color="#1f365c"/>
-              <stop offset="55%" stop-color="#2f7f73"/>
-              <stop offset="100%" stop-color="#efb84a"/>
-            </linearGradient>
-          </defs>
-          <rect width="1200" height="675" fill="url(#g)"/>
-          <circle cx="1020" cy="130" r="120" fill="rgba(255,255,255,0.12)"/>
-          <circle cx="170" cy="570" r="160" fill="rgba(255,255,255,0.09)"/>
-          <text x="80" y="160" fill="#fffdf8" font-size="44" font-family="Pretendard, Malgun Gothic, sans-serif">${safeSubject}</text>
-          <text x="80" y="280" fill="#fffdf8" font-size="72" font-weight="700" font-family="Pretendard, Malgun Gothic, sans-serif">${safeTitle}</text>
-          <text x="80" y="360" fill="rgba(255,253,248,0.82)" font-size="30" font-family="Pretendard, Malgun Gothic, sans-serif">자동 생성된 기본 썸네일</text>
-        </svg>`;
-      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-    }
-
-    function extractThumbnailFromHtml(htmlText, fallbackThumbnail) {
-      try {
-        const doc = new DOMParser().parseFromString(htmlText, "text/html");
-        const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
-        const twitterImage = doc.querySelector('meta[name="twitter:image"]')?.content;
-        const heroImage = doc.querySelector("img")?.getAttribute("src");
-        const candidate = ogImage || twitterImage || heroImage || "";
-
-        if (/^(data:|https?:\/\/)/i.test(candidate)) {
-          return candidate;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      return fallbackThumbnail;
-    }
-
-    async function buildFilePayload(file, title, subject) {
-      const dataUrl = await fileToDataUrl(file);
-      const fallbackThumbnail = createFallbackThumbnail(title, subject);
-      let thumbnailAuto = fallbackThumbnail;
-
-      if (file.type.startsWith("image/")) {
-        thumbnailAuto = dataUrl;
-      } else if (/\.html?$/i.test(file.name) || file.type.includes("html")) {
-        const htmlText = await fileToText(file);
-        thumbnailAuto = extractThumbnailFromHtml(htmlText, fallbackThumbnail);
-      }
-
-      return {
-        fileName: file.name,
-        fileType: file.type || "application/octet-stream",
-        fileSize: file.size,
-        fileDataUrl: dataUrl,
-        thumbnailAuto
-      };
-    }
-
-    function getLaunchUrl(item) {
-      return item.fileDataUrl || item.simulationUrl || "#";
-    }
-
-    function getLaunchLabel(item) {
-      return item.fileDataUrl ? "업로드 파일 열기" : "링크 열기";
-    }
-
-    function renderApprovedBoard(items) {
-      const approved = items.filter(item => item.status === "approved");
-
-      if (!approved.length) {
-        approvedBoard.innerHTML = '<div class="empty">아직 승인된 시뮬레이션이 없습니다. 교사가 승인하면 여기에 표시됩니다.</div>';
-        return;
-      }
-
-      approvedBoard.innerHTML = approved
-        .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
-        .map(item => `
-          <article class="card">
-            <img class="thumb" src="${escapeHtml(item.thumbnailAuto || createFallbackThumbnail(item.simulationTitle, item.subject))}" alt="${escapeHtml(item.simulationTitle)} 썸네일">
-            <div class="card-top">
-              <div>
-                <div class="badge ${statusClass(item.status)}">${statusLabel(item.status)}</div>
-                <h3 style="margin:12px 0 4px; font-size:22px;">${escapeHtml(item.simulationTitle)}</h3>
-                <div class="small">${escapeHtml(item.subject)} · ${escapeHtml(item.studentName)} · ${escapeHtml(item.className)}</div>
-              </div>
-            </div>
-            <div class="meta">${escapeHtml(item.summary)}</div>
-            <div class="link-row">
-              <span class="file-chip">${escapeHtml(item.fileName || "링크 전용")}</span>
-              <span class="small">${escapeHtml(formatBytes(item.fileSize))}</span>
-            </div>
-            <div class="link-row">
-              <a href="${escapeHtml(getLaunchUrl(item))}" target="_blank" rel="noopener noreferrer">${getLaunchLabel(item)}</a>
-              <span class="small">신청 시각: ${escapeHtml(item.submittedAt)}</span>
-            </div>
-          </article>
-        `)
-        .join("");
-    }
-
-    function renderDashboard(items) {
-      const pending = items.filter(item => item.status === "pending");
-      const approved = items.filter(item => item.status === "approved");
-
-      document.getElementById("dashboardPending").textContent = pending.length;
-      document.getElementById("dashboardApproved").textContent = approved.length;
-
-      if (!pending.length) {
-        pendingQueue.innerHTML = '<div class="empty">현재 승인 대기 중인 신청이 없습니다.</div>';
-        return;
-      }
-
-      pendingQueue.innerHTML = pending
-        .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
-        .map(item => `
-          <div class="queue-item">
-            <img class="thumb" src="${escapeHtml(item.thumbnailAuto || createFallbackThumbnail(item.simulationTitle, item.subject))}" alt="${escapeHtml(item.simulationTitle)} 썸네일">
-            <div class="card-top">
-              <div>
-                <div class="badge ${statusClass(item.status)}">${statusLabel(item.status)}</div>
-                <h3 style="margin:12px 0 4px; font-size:20px;">${escapeHtml(item.simulationTitle)}</h3>
-                <div class="small">${escapeHtml(item.studentName)} · ${escapeHtml(item.className)} · ${escapeHtml(item.subject)}</div>
-              </div>
-              <div class="small">${escapeHtml(item.submittedAt)}</div>
-            </div>
-            <div class="meta">${escapeHtml(item.summary)}</div>
-            <div class="meta">교사 메모: ${escapeHtml(item.teacherMessage || "없음")}</div>
-            <div class="link-row">
-              <span class="file-chip">${escapeHtml(item.fileName || "링크 전용")}</span>
-              <span class="small">${escapeHtml(formatBytes(item.fileSize))}</span>
-            </div>
-            <div class="link-row">
-              <a href="${escapeHtml(getLaunchUrl(item))}" target="_blank" rel="noopener noreferrer">미리 열어보기</a>
-            </div>
-            <div class="queue-actions">
-              <button class="btn btn-primary" type="button" data-action="approve" data-id="${item.id}">승인</button>
-              <button class="btn btn-danger" type="button" data-action="reject" data-id="${item.id}">반려</button>
-            </div>
-          </div>
-        `)
-        .join("");
-
-    }
-
-    function updateSummary(items) {
-      const approved = items.filter(item => item.status === "approved");
-      const pending = items.filter(item => item.status === "pending");
-      const latest = [...items].sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0];
-
-      document.getElementById("approvedCount").textContent = approved.length;
-      document.getElementById("pendingCount").textContent = pending.length;
-      document.getElementById("latestStudent").textContent = latest ? latest.studentName : "-";
-    }
-
-    function renderAll() {
-      const items = loadSubmissions();
-      renderApprovedBoard(items);
-      renderDashboard(items);
-      updateSummary(items);
-    }
-
-    submissionForm.addEventListener("submit", async event => {
+    document.getElementById("introForm").addEventListener("submit", event => {
       event.preventDefault();
+      student.name = document.getElementById("studentName").value.trim();
+      student.className = document.getElementById("className").value.trim();
+      introPanel.classList.add("hidden");
+      quizPanel.classList.remove("hidden");
+      currentIndex = 0;
+      renderQuestion();
+    });
 
-      const formData = new FormData(submissionForm);
-      const file = formData.get("simulationFile");
-      if (!(file instanceof File) || !file.size) {
-        submissionStatus.textContent = "업로드할 파일을 선택해야 합니다.";
-        return;
-      }
+    function renderQuestion() {
+      const q = QUESTIONS[currentIndex];
+      progressText.textContent = `${currentIndex + 1} / ${QUESTIONS.length}`;
+      progressTag.textContent = q.tagLabel;
+      progressFill.style.width = `${((currentIndex) / QUESTIONS.length) * 100}%`;
 
-      submissionStatus.textContent = "파일을 읽고 신청서를 저장하는 중입니다...";
+      questionCard.innerHTML = `
+        <div class="question-tag">${escapeHtml(q.tagLabel)}</div>
+        <div class="question-text">${escapeHtml(q.text)}</div>
+        <div class="option-list">
+          ${q.options.map((opt, i) => `
+            <label class="option" data-key="${opt.key}">
+              <input type="radio" name="option" value="${opt.key}" ${answers[currentIndex] === opt.key ? "checked" : ""}>
+              <span>${escapeHtml(opt.label)}</span>
+            </label>
+          `).join("")}
+        </div>
+      `;
 
-      try {
-        const filePayload = await buildFilePayload(
-          file,
-          String(formData.get("simulationTitle") || "").trim(),
-          String(formData.get("subject") || "").trim()
-        );
-
-        const newItem = {
-          id: crypto.randomUUID(),
-          studentName: String(formData.get("studentName") || "").trim(),
-          className: String(formData.get("className") || "").trim(),
-          simulationTitle: String(formData.get("simulationTitle") || "").trim(),
-          subject: String(formData.get("subject") || "").trim(),
-          simulationUrl: String(formData.get("simulationUrl") || "").trim(),
-          summary: String(formData.get("summary") || "").trim(),
-          teacherMessage: String(formData.get("teacherMessage") || "").trim(),
-          status: "pending",
-          submittedAt: getNowStamp(),
-          ...filePayload
-        };
-
-        const items = loadSubmissions();
-        items.push(newItem);
-        saveSubmissions(items);
-        submissionForm.reset();
-
-        submissionStatus.textContent = `${newItem.studentName} 학생의 "${newItem.simulationTitle}" 신청이 접수되었습니다. 현재 상태는 승인 대기입니다.`;
-        renderAll();
-        closeModal(applyModal);
-      } catch (error) {
-        console.error(error);
-        if (error instanceof DOMException || /quota/i.test(String(error?.message))) {
-          submissionStatus.textContent = "파일이 너무 커서 브라우저 저장 한도를 넘었습니다. 파일을 더 작게 줄여서 다시 올려 주세요.";
-          return;
+      questionCard.querySelectorAll(".option").forEach(optionEl => {
+        if (optionEl.dataset.key === answers[currentIndex]) {
+          optionEl.classList.add("selected");
         }
-        submissionStatus.textContent = `업로드 처리 중 오류가 발생했습니다: ${error.message}`;
+        optionEl.addEventListener("click", () => {
+          answers[currentIndex] = optionEl.dataset.key;
+          questionCard.querySelectorAll(".option").forEach(el => el.classList.remove("selected"));
+          optionEl.classList.add("selected");
+          nextBtn.disabled = false;
+          nextBtn.textContent = currentIndex === QUESTIONS.length - 1 ? "결과 보기" : "다음";
+        });
+      });
+
+      nextBtn.disabled = !answers[currentIndex];
+      nextBtn.textContent = currentIndex === QUESTIONS.length - 1 ? "결과 보기" : "다음";
+      prevBtn.disabled = currentIndex === 0;
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (currentIndex === 0) return;
+      currentIndex -= 1;
+      renderQuestion();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (!answers[currentIndex]) return;
+      if (currentIndex < QUESTIONS.length - 1) {
+        currentIndex += 1;
+        renderQuestion();
+      } else {
+        finishQuiz();
       }
     });
 
-    document.getElementById("openApplyBtn").addEventListener("click", () => {
-      openModal(applyModal);
-    });
+    function finishQuiz() {
+      progressFill.style.width = "100%";
 
-    document.getElementById("openAdminBtn").addEventListener("click", () => {
-      openModal(adminModal);
-      window.setTimeout(() => adminPasswordInput.focus(), 80);
-    });
+      const misconceptionsHit = [];
+      let correctCount = 0;
 
-    document.querySelectorAll("[data-close-modal]").forEach(button => {
-      button.addEventListener("click", () => {
-        closeModal(document.getElementById(button.dataset.closeModal));
+      QUESTIONS.forEach((q, i) => {
+        if (answers[i] === "correct") {
+          correctCount += 1;
+        } else {
+          misconceptionsHit.push(q.tag);
+        }
       });
+
+      const record = {
+        id: crypto.randomUUID(),
+        name: student.name,
+        className: student.className,
+        correctCount,
+        misconceptions: misconceptionsHit,
+        submittedAt: new Date().toISOString()
+      };
+
+      const records = loadRecords();
+      records.push(record);
+      saveRecords(records);
+
+      renderResult(record);
+
+      quizPanel.classList.add("hidden");
+      resultPanel.classList.remove("hidden");
+    }
+
+    function renderResult(record) {
+      document.getElementById("resultIntro").textContent =
+        `${record.name} 학생, ${QUESTIONS.length}문항 중 ${record.correctCount}문항을 과학적 개념으로 답했습니다. 아래에서 어떤 오개념이 발견되었는지 확인해 보세요.`;
+      document.getElementById("scoreCorrect").textContent = `${record.correctCount} / ${QUESTIONS.length}`;
+      document.getElementById("scoreMisconceptions").textContent = `${record.misconceptions.length}개`;
+      document.getElementById("scoreName").textContent = `${record.name || "-"} (${record.className || "-"})`;
+
+      const list = document.getElementById("misconceptionList");
+      list.innerHTML = QUESTIONS.map(q => {
+        const hit = record.misconceptions.includes(q.tag);
+        return `
+          <div class="misconception-card ${hit ? "hit" : "clear"}">
+            <div class="misconception-title">
+              <span class="pill ${hit ? "pill-hit" : "pill-clear"}">${hit ? "오개념 발견" : "정확히 이해함"}</span>
+              ${escapeHtml(q.tagLabel)}
+            </div>
+            <div class="small" style="margin-bottom:6px;">참고: ${escapeHtml(q.framework)}</div>
+            <div class="misconception-text">${q.explain}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    document.getElementById("retakeBtn").addEventListener("click", () => {
+      answers.fill(null);
+      currentIndex = 0;
+      resultPanel.classList.add("hidden");
+      introPanel.classList.remove("hidden");
+      document.getElementById("introForm").reset();
     });
 
-    [applyModal, adminModal].forEach(modal => {
-      modal.addEventListener("click", event => {
-        if (event.target === modal) closeModal(modal);
-      });
+    // 교사용 모달
+    const teacherModal = document.getElementById("teacherModal");
+    const teacherStatus = document.getElementById("teacherStatus");
+    const teacherDashboard = document.getElementById("teacherDashboard");
+    const teacherPasswordInput = document.getElementById("teacherPassword");
+    let isTeacherOpen = false;
+
+    document.getElementById("openTeacherBtn").addEventListener("click", () => {
+      teacherModal.classList.remove("hidden");
+      window.setTimeout(() => teacherPasswordInput.focus(), 60);
+    });
+
+    document.getElementById("closeTeacherBtn").addEventListener("click", () => {
+      teacherModal.classList.add("hidden");
+    });
+
+    teacherModal.addEventListener("click", event => {
+      if (event.target === teacherModal) teacherModal.classList.add("hidden");
     });
 
     document.addEventListener("keydown", event => {
-      if (event.key !== "Escape") return;
-      document.querySelectorAll(".modal.show").forEach(closeModal);
+      if (event.key === "Escape") teacherModal.classList.add("hidden");
     });
 
-    document.getElementById("adminLoginBtn").addEventListener("click", () => {
-      if (adminPasswordInput.value === ADMIN_PASSWORD) {
-        isAdminOpen = true;
-        dashboard.classList.add("show");
-        adminStatus.textContent = "관리자 인증이 완료되었습니다. 아래에서 승인 대기 목록을 검토할 수 있습니다.";
-        renderAll();
+    const classFilterSelect = document.getElementById("classFilter");
+
+    document.getElementById("teacherLoginBtn").addEventListener("click", () => {
+      if (teacherPasswordInput.value === TEACHER_PASSWORD) {
+        isTeacherOpen = true;
+        teacherDashboard.classList.add("show");
+        teacherStatus.textContent = "인증이 완료되었습니다. 아래에서 학급 통계를 확인할 수 있습니다.";
+        renderTeacherDashboard();
       } else {
-        isAdminOpen = false;
-        dashboard.classList.remove("show");
-        adminStatus.textContent = "비밀번호가 올바르지 않습니다.";
+        isTeacherOpen = false;
+        teacherDashboard.classList.remove("show");
+        teacherStatus.textContent = "비밀번호가 올바르지 않습니다.";
       }
     });
 
-    document.getElementById("adminLogoutBtn").addEventListener("click", () => {
-      isAdminOpen = false;
-      adminPasswordInput.value = "";
-      dashboard.classList.remove("show");
-      adminStatus.textContent = "관리자 화면을 닫았습니다.";
-      closeModal(adminModal);
+    document.getElementById("clearDataBtn").addEventListener("click", () => {
+      if (!isTeacherOpen) {
+        teacherStatus.textContent = "먼저 비밀번호를 입력해 인증해야 삭제할 수 있습니다.";
+        return;
+      }
+      if (!confirm("저장된 모든 학생 진단 기록을 삭제할까요? 이 작업은 되돌릴 수 없습니다.")) return;
+      saveRecords([]);
+      renderTeacherDashboard();
+      teacherStatus.textContent = "모든 기록을 삭제했습니다.";
     });
 
-    pendingQueue.addEventListener("click", event => {
-      const button = event.target.closest("button[data-action]");
-      if (!button || !isAdminOpen) return;
+    classFilterSelect.addEventListener("change", () => renderTeacherDashboard());
 
-      const { action, id } = button.dataset;
-      const items = loadSubmissions();
-      const target = items.find(item => item.id === id);
-      if (!target) return;
+    document.getElementById("exportCsvBtn").addEventListener("click", () => {
+      const records = getFilteredRecords();
+      if (!records.length) {
+        teacherStatus.textContent = "내보낼 기록이 없습니다.";
+        return;
+      }
 
-      target.status = action === "approve" ? "approved" : "rejected";
-      saveSubmissions(items);
-      renderAll();
-      adminStatus.textContent = `"${target.simulationTitle}" 항목을 ${action === "approve" ? "승인" : "반려"}했습니다.`;
+      const header = ["이름", "학급", "제출시각", "정답수", `총문항(${QUESTIONS.length})`, "오개념개수", ...QUESTIONS.map(q => q.tagLabel)];
+      const rows = records.map(r => [
+        r.name,
+        r.className,
+        new Date(r.submittedAt).toLocaleString("ko-KR"),
+        r.correctCount,
+        QUESTIONS.length,
+        r.misconceptions.length,
+        ...QUESTIONS.map(q => (r.misconceptions.includes(q.tag) ? "O" : ""))
+      ]);
+
+      const csvLines = [header, ...rows].map(row =>
+        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+      );
+      const csvContent = "﻿" + csvLines.join("\r\n");
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `energy-misconception-results-${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
     });
 
-    renderAll();
+    function getFilteredRecords() {
+      const records = loadRecords();
+      const selectedClass = classFilterSelect.value;
+      if (!selectedClass || selectedClass === "__all__") return records;
+      return records.filter(r => (r.className || "학급 정보 없음") === selectedClass);
+    }
+
+    function populateClassFilter(records) {
+      const classes = Array.from(new Set(records.map(r => r.className || "학급 정보 없음"))).sort();
+      const current = classFilterSelect.value || "__all__";
+
+      classFilterSelect.innerHTML = [
+        `<option value="__all__">전체 학급 (${records.length}명)</option>`,
+        ...classes.map(c => {
+          const count = records.filter(r => (r.className || "학급 정보 없음") === c).length;
+          return `<option value="${escapeHtml(c)}">${escapeHtml(c)} (${count}명)</option>`;
+        })
+      ].join("");
+
+      if (classes.includes(current) || current === "__all__") {
+        classFilterSelect.value = current;
+      }
+    }
+
+    function renderFreqGroup(elementId, items, totalCount) {
+      const el = document.getElementById(elementId);
+      if (!totalCount) {
+        el.innerHTML = '<div class="empty">아직 제출된 진단 기록이 없습니다.</div>';
+        return;
+      }
+      el.innerHTML = items.map(item => {
+        const percent = Math.round((item.count / totalCount) * 100);
+        return `
+          <div class="freq-row">
+            <span>${escapeHtml(item.label)}</span>
+            <div class="freq-bar-track"><div class="freq-bar-fill" style="width:${percent}%"></div></div>
+            <span>${item.count}명 (${percent}%)</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderTeacherDashboard() {
+      const allRecords = loadRecords();
+      populateClassFilter(allRecords);
+
+      const records = getFilteredRecords();
+      document.getElementById("teacherTotal").textContent = records.length;
+      document.getElementById("rosterCount").textContent = records.length ? `(${records.length}건)` : "";
+      document.getElementById("lastUpdatedLabel").textContent = allRecords.length
+        ? `최근 제출: ${new Date([...allRecords].sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0].submittedAt).toLocaleString("ko-KR")}`
+        : "";
+
+      if (!records.length) {
+        document.getElementById("teacherAvg").textContent = `0 / ${QUESTIONS.length}`;
+        document.getElementById("teacherTopMisconception").textContent = "-";
+        renderFreqGroup("freqListQualitative", [], 0);
+        renderFreqGroup("freqListQuantitative", [], 0);
+        document.getElementById("rosterList").innerHTML = "";
+        return;
+      }
+
+      const avgCorrect = records.reduce((sum, r) => sum + r.correctCount, 0) / records.length;
+      document.getElementById("teacherAvg").textContent = `${avgCorrect.toFixed(1)} / ${QUESTIONS.length}`;
+
+      const freq = {};
+      QUESTIONS.forEach(q => { freq[q.tag] = 0; });
+      records.forEach(r => {
+        r.misconceptions.forEach(tag => {
+          freq[tag] = (freq[tag] || 0) + 1;
+        });
+      });
+
+      const sortedTags = QUESTIONS
+        .map(q => ({ tag: q.tag, label: q.tagLabel, category: q.category, count: freq[q.tag] || 0 }))
+        .sort((a, b) => b.count - a.count);
+
+      const top = sortedTags[0];
+      document.getElementById("teacherTopMisconception").textContent =
+        top && top.count > 0 ? `${top.label} (${top.count}명)` : "없음";
+
+      renderFreqGroup("freqListQualitative", sortedTags.filter(item => item.category === "qualitative"), records.length);
+      renderFreqGroup("freqListQuantitative", sortedTags.filter(item => item.category === "quantitative"), records.length);
+
+      document.getElementById("rosterList").innerHTML = records
+        .slice()
+        .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
+        .map(r => {
+          const tagsHtml = r.misconceptions.length
+            ? QUESTIONS.filter(q => r.misconceptions.includes(q.tag))
+              .map(q => `<span class="tag-chip">${escapeHtml(q.tagLabel)}</span>`).join("")
+            : '<span class="tag-chip none">발견된 오개념 없음</span>';
+
+          return `
+            <div class="roster-item" data-id="${r.id}">
+              <div class="roster-item-head">
+                <div>
+                  <strong>${escapeHtml(r.name || "이름 없음")}</strong>
+                  <span class="small">· ${escapeHtml(r.className || "학급 정보 없음")}</span>
+                  <div class="small">정답 ${r.correctCount} / ${QUESTIONS.length} · 오개념 ${r.misconceptions.length}개</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span class="small">${escapeHtml(new Date(r.submittedAt).toLocaleString("ko-KR"))}</span>
+                  <span class="caret">▾</span>
+                </div>
+              </div>
+              <div class="roster-detail">${tagsHtml}</div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    document.getElementById("rosterList").addEventListener("click", event => {
+      const item = event.target.closest(".roster-item");
+      if (!item) return;
+      item.querySelector(".roster-detail").classList.toggle("show");
+    });
   </script>
 </body>
 
