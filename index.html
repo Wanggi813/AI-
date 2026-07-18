@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학생 시뮬레이션 허브</title>
+  <style>
+    :root {
+      --bg: #f4efe7;
+      --paper: #fffaf2;
+      --ink: #1d2433;
+      --muted: #636b74;
+      --line: rgba(29, 36, 51, 0.12);
+      --brand: #d95d39;
+      --brand-deep: #ad3f20;
+      --navy: #1f365c;
+      --teal: #2f7f73;
+      --gold: #efb84a;
+      --danger: #b64040;
+      --shadow: 0 22px 60px rgba(31, 54, 92, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Malgun Gothic", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(239, 184, 74, 0.24), transparent 28%),
+        radial-gradient(circle at top right, rgba(47, 127, 115, 0.18), transparent 30%),
+        linear-gradient(180deg, #f8f2e9 0%, var(--bg) 100%);
+      color: var(--ink);
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 34px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(31, 54, 92, 0.96), rgba(47, 127, 115, 0.88));
+      color: #fffdf8;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -90px auto;
+      width: 260px;
+      height: 260px;
+      background: rgba(239, 184, 74, 0.22);
+      border-radius: 50%;
+      filter: blur(8px);
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+    }
+
+    h1 {
+      margin: 16px 0 12px;
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(255, 253, 248, 0.86);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.14);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-soft {
+      background: #f3ead7;
+      color: var(--navy);
+    }
+
+    .btn-danger {
+      background: #fbe8e5;
+      color: var(--danger);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: rgba(255, 253, 248, 0.7);
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 28px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 22px;
+      margin-top: 24px;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 24px 24px 0;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .panel-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .panel-body {
+      padding: 24px;
+    }
+
+    .board,
+    .queue {
+      display: grid;
+      gap: 14px;
+    }
+
+    .card,
+    .queue-item {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: white;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .card:hover,
+    .queue-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px rgba(31, 54, 92, 0.08);
+    }
+
+    .thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      border-radius: 18px;
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      background: #f4efe7;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-approved {
+      background: #dbf4ec;
+      color: #116454;
+    }
+
+    .badge-pending {
+      background: #fff0cc;
+      color: #8c6500;
+    }
+
+    .badge-rejected {
+      background: #fde2df;
+      color: #9a3028;
+    }
+
+    .meta {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .link-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      align-items: center;
+    }
+
+    .link-row a {
+      color: var(--brand-deep);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .link-row a:hover {
+      text-decoration: underline;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font: inherit;
+      color: inherit;
+      background: white;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: rgba(217, 93, 57, 0.55);
+      box-shadow: 0 0 0 4px rgba(217, 93, 57, 0.12);
+    }
+
+    .help {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .status-box {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: #f6efe2;
+      color: var(--navy);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 52px;
+    }
+
+    .admin-entry {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .admin-entry input {
+      flex: 1 1 220px;
+    }
+
+    .dashboard {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      display: none;
+      animation: rise 0.35s ease;
+    }
+
+    .dashboard.show {
+      display: block;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .dashboard-stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .dashboard-stat strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 26px;
+    }
+
+    .empty {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px dashed var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .file-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #f3ead7;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats,
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 26px;
+      }
+
+      .hero-top,
+      .card-top {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">학생 시뮬레이션 허브</div>
+          <h1>신청 후 승인되는<br>교실용 시뮬레이션 전시관</h1>
+          <p>
+            학생은 먼저 업로드 신청서를 제출하고, 교사는 관리자 대시보드에서 검토한 뒤 승인합니다.
+            승인된 시뮬레이션만 공개 보드에 올라가도록 구성했습니다.
+          </p>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button"
+          onclick="document.getElementById('applyForm').scrollIntoView({behavior: 'smooth'})">업로드 신청하기</button>
+        <button class="btn btn-secondary" type="button"
+          onclick="document.getElementById('teacherPanel').scrollIntoView({behavior: 'smooth'})">교사 승인 화면</button>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-label">공개된 시뮬레이션</span>
+          <strong id="approvedCount">0</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label">승인 대기</span>
+          <strong id="pendingCount">0</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label">최근 신청자</span>
+          <strong id="latestStudent">-</strong>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>공개 시뮬레이션 보드</h2>
+          <p>교사가 승인한 작품만 여기에 보입니다. 파일은 바로 열어볼 수 있고, HTML 안의 대표 이미지는 자동 썸네일로 사용됩니다.</p>
+        </div>
+        <div class="panel-body">
+          <div class="board" id="approvedBoard"></div>
+        </div>
+      </section>
+
+      <section class="panel" id="applyForm">
+        <div class="panel-head">
+          <h2>학생 업로드 신청</h2>
+          <p>제출하면 바로 공개되지 않고, 교사가 검토한 뒤 승인해야 게시됩니다.</p>
+        </div>
+        <div class="panel-body">
+          <form id="submissionForm">
+            <div class="field">
+              <label for="studentName">학생 이름</label>
+              <input id="studentName" name="studentName" type="text" placeholder="예: 김하늘" required>
+            </div>
+            <div class="field">
+              <label for="className">학급 / 모둠</label>
+              <input id="className" name="className" type="text" placeholder="예: 2학년 3반 / 4모둠" required>
+            </div>
+            <div class="field">
+              <label for="simulationTitle">시뮬레이션 제목</label>
+              <input id="simulationTitle" name="simulationTitle" type="text" placeholder="예: 빛의 굴절 실험기" required>
+            </div>
+            <div class="field">
+              <label for="subject">과목</label>
+              <select id="subject" name="subject" required>
+                <option value="">과목 선택</option>
+                <option value="과학">과학</option>
+                <option value="수학">수학</option>
+                <option value="정보">정보</option>
+                <option value="융합">융합</option>
+                <option value="기타">기타</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="simulationFile">시뮬레이션 파일</label>
+              <input id="simulationFile" name="simulationFile" type="file" accept=".html,.htm,image/*" required>
+              <div class="help">HTML 파일이나 이미지 파일을 올릴 수 있습니다. HTML 파일은 내부의 대표 이미지나 첫 번째 이미지를 자동으로 썸네일로 사용합니다.</div>
+            </div>
+            <div class="field">
+              <label for="simulationUrl">외부 실행 링크</label>
+              <input id="simulationUrl" name="simulationUrl" type="url"
+                placeholder="선택 사항: https://example.com/simulation">
+            </div>
+            <div class="field">
+              <label for="summary">작품 소개</label>
+              <textarea id="summary" name="summary" placeholder="무엇을 구현했고, 어떻게 사용하면 되는지 적어 주세요." required></textarea>
+            </div>
+            <div class="field">
+              <label for="teacherMessage">교사에게 남길 메모</label>
+              <textarea id="teacherMessage" name="teacherMessage" placeholder="검토 시 참고할 내용이 있으면 적어 주세요."></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">업로드 신청 제출</button>
+          </form>
+          <div class="status-box" id="submissionStatus">아직 제출된 신청이 없습니다.</div>
+          <p class="help">현재 버전은 브라우저의 localStorage에 저장되는 데모입니다. 같은 브라우저에서만 데이터가 유지되며, 큰 파일은 저장 한도 때문에 업로드되지 않을 수 있습니다.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <section class="panel" id="teacherPanel" style="margin-top: 22px;">
+      <div class="panel-head">
+        <h2>교사용 관리자 대시보드</h2>
+        <p>비밀번호를 입력하면 승인 대기 항목을 검토하고 승인 또는 반려할 수 있습니다.</p>
+      </div>
+      <div class="panel-body">
+        <div class="admin-entry">
+          <input id="adminPassword" type="password" placeholder="교사용 비밀번호 입력">
+          <button class="btn btn-primary" type="button" id="adminLoginBtn">관리자 열기</button>
+          <button class="btn btn-soft" type="button" id="adminLogoutBtn">닫기</button>
+        </div>
+        <div class="status-box" id="adminStatus">비밀번호 hshs2026을 입력하면 관리자 화면이 열립니다.</div>
+
+        <div class="dashboard" id="dashboard">
+          <div class="dashboard-grid">
+            <div class="dashboard-stat">
+              <span class="small">승인 대기 신청</span>
+              <strong id="dashboardPending">0</strong>
+            </div>
+            <div class="dashboard-stat">
+              <span class="small">총 공개 작품</span>
+              <strong id="dashboardApproved">0</strong>
+            </div>
+          </div>
+          <div class="small">승인하면 공개 보드에 즉시 반영되고, 반려하면 기록은 남되 공개되지 않습니다.</div>
+          <div class="queue" id="pendingQueue"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "simulation-hub-submissions-v2";
+    const ADMIN_PASSWORD = "hshs2026";
+
+    const seedData = [
+      {
+        id: crypto.randomUUID(),
+        studentName: "이지안",
+        className: "2학년 1반",
+        simulationTitle: "행성 중력 궤도 시뮬레이터",
+        subject: "과학",
+        simulationUrl: "https://example.com/orbit",
+        fileName: "orbit-sim.html",
+        fileType: "text/html",
+        fileSize: 182400,
+        fileDataUrl: "",
+        thumbnailAuto: createFallbackThumbnail("행성 중력 궤도 시뮬레이터", "과학"),
+        summary: "행성 질량과 속도를 바꾸며 공전 궤도가 어떻게 달라지는지 확인하는 작품입니다.",
+        teacherMessage: "발표 때 질량 변화 실험도 같이 보여줄 예정입니다.",
+        status: "approved",
+        submittedAt: "2026-07-18 09:00"
+      },
+      {
+        id: crypto.randomUUID(),
+        studentName: "박서윤",
+        className: "1학년 4반",
+        simulationTitle: "확률 실험 주사위 실험실",
+        subject: "수학",
+        simulationUrl: "https://example.com/dice",
+        fileName: "dice-lab.html",
+        fileType: "text/html",
+        fileSize: 165700,
+        fileDataUrl: "",
+        thumbnailAuto: createFallbackThumbnail("확률 실험 주사위 실험실", "수학"),
+        summary: "주사위를 여러 번 던질 때 평균값과 분포가 어떻게 수렴하는지 보여주는 시뮬레이션입니다.",
+        teacherMessage: "",
+        status: "pending",
+        submittedAt: "2026-07-18 10:20"
+      }
+    ];
+
+    const approvedBoard = document.getElementById("approvedBoard");
+    const submissionForm = document.getElementById("submissionForm");
+    const submissionStatus = document.getElementById("submissionStatus");
+    const pendingQueue = document.getElementById("pendingQueue");
+    const dashboard = document.getElementById("dashboard");
+    const adminStatus = document.getElementById("adminStatus");
+    const adminPasswordInput = document.getElementById("adminPassword");
+
+    let isAdminOpen = false;
+
+    function getNowStamp() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, "0");
+      const dd = String(now.getDate()).padStart(2, "0");
+      const hh = String(now.getHours()).padStart(2, "0");
+      const mi = String(now.getMinutes()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
+    }
+
+    function loadSubmissions() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(seedData));
+        return [...seedData];
+      }
+
+      try {
+        return JSON.parse(stored);
+      } catch (error) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(seedData));
+        return [...seedData];
+      }
+    }
+
+    function saveSubmissions(items) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function statusLabel(status) {
+      if (status === "approved") return "승인됨";
+      if (status === "rejected") return "반려됨";
+      return "승인 대기";
+    }
+
+    function statusClass(status) {
+      if (status === "approved") return "badge-approved";
+      if (status === "rejected") return "badge-rejected";
+      return "badge-pending";
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes) return "파일 크기 정보 없음";
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    }
+
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("파일을 읽지 못했습니다."));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function fileToText(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("HTML 파일을 읽지 못했습니다."));
+        reader.readAsText(file, "utf-8");
+      });
+    }
+
+    function createFallbackThumbnail(title, subject) {
+      const safeTitle = escapeHtml(title || "시뮬레이션");
+      const safeSubject = escapeHtml(subject || "학생 작품");
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="#1f365c"/>
+              <stop offset="55%" stop-color="#2f7f73"/>
+              <stop offset="100%" stop-color="#efb84a"/>
+            </linearGradient>
+          </defs>
+          <rect width="1200" height="675" fill="url(#g)"/>
+          <circle cx="1020" cy="130" r="120" fill="rgba(255,255,255,0.12)"/>
+          <circle cx="170" cy="570" r="160" fill="rgba(255,255,255,0.09)"/>
+          <text x="80" y="160" fill="#fffdf8" font-size="44" font-family="Pretendard, Malgun Gothic, sans-serif">${safeSubject}</text>
+          <text x="80" y="280" fill="#fffdf8" font-size="72" font-weight="700" font-family="Pretendard, Malgun Gothic, sans-serif">${safeTitle}</text>
+          <text x="80" y="360" fill="rgba(255,253,248,0.82)" font-size="30" font-family="Pretendard, Malgun Gothic, sans-serif">자동 생성된 기본 썸네일</text>
+        </svg>`;
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    }
+
+    function extractThumbnailFromHtml(htmlText, fallbackThumbnail) {
+      try {
+        const doc = new DOMParser().parseFromString(htmlText, "text/html");
+        const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
+        const twitterImage = doc.querySelector('meta[name="twitter:image"]')?.content;
+        const heroImage = doc.querySelector("img")?.getAttribute("src");
+        const candidate = ogImage || twitterImage || heroImage || "";
+
+        if (/^(data:|https?:\/\/)/i.test(candidate)) {
+          return candidate;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      return fallbackThumbnail;
+    }
+
+    async function buildFilePayload(file, title, subject) {
+      const dataUrl = await fileToDataUrl(file);
+      const fallbackThumbnail = createFallbackThumbnail(title, subject);
+      let thumbnailAuto = fallbackThumbnail;
+
+      if (file.type.startsWith("image/")) {
+        thumbnailAuto = dataUrl;
+      } else if (/\.html?$/i.test(file.name) || file.type.includes("html")) {
+        const htmlText = await fileToText(file);
+        thumbnailAuto = extractThumbnailFromHtml(htmlText, fallbackThumbnail);
+      }
+
+      return {
+        fileName: file.name,
+        fileType: file.type || "application/octet-stream",
+        fileSize: file.size,
+        fileDataUrl: dataUrl,
+        thumbnailAuto
+      };
+    }
+
+    function getLaunchUrl(item) {
+      return item.fileDataUrl || item.simulationUrl || "#";
+    }
+
+    function getLaunchLabel(item) {
+      return item.fileDataUrl ? "업로드 파일 열기" : "링크 열기";
+    }
+
+    function renderApprovedBoard(items) {
+      const approved = items.filter(item => item.status === "approved");
+
+      if (!approved.length) {
+        approvedBoard.innerHTML = '<div class="empty">아직 승인된 시뮬레이션이 없습니다. 교사가 승인하면 여기에 표시됩니다.</div>';
+        return;
+      }
+
+      approvedBoard.innerHTML = approved
+        .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
+        .map(item => `
+          <article class="card">
+            <img class="thumb" src="${escapeHtml(item.thumbnailAuto || createFallbackThumbnail(item.simulationTitle, item.subject))}" alt="${escapeHtml(item.simulationTitle)} 썸네일">
+            <div class="card-top">
+              <div>
+                <div class="badge ${statusClass(item.status)}">${statusLabel(item.status)}</div>
+                <h3 style="margin:12px 0 4px; font-size:22px;">${escapeHtml(item.simulationTitle)}</h3>
+                <div class="small">${escapeHtml(item.subject)} · ${escapeHtml(item.studentName)} · ${escapeHtml(item.className)}</div>
+              </div>
+            </div>
+            <div class="meta">${escapeHtml(item.summary)}</div>
+            <div class="link-row">
+              <span class="file-chip">${escapeHtml(item.fileName || "링크 전용")}</span>
+              <span class="small">${escapeHtml(formatBytes(item.fileSize))}</span>
+            </div>
+            <div class="link-row">
+              <a href="${escapeHtml(getLaunchUrl(item))}" target="_blank" rel="noopener noreferrer">${getLaunchLabel(item)}</a>
+              <span class="small">신청 시각: ${escapeHtml(item.submittedAt)}</span>
+            </div>
+          </article>
+        `)
+        .join("");
+    }
+
+    function renderDashboard(items) {
+      const pending = items.filter(item => item.status === "pending");
+      const approved = items.filter(item => item.status === "approved");
+
+      document.getElementById("dashboardPending").textContent = pending.length;
+      document.getElementById("dashboardApproved").textContent = approved.length;
+
+      if (!pending.length) {
+        pendingQueue.innerHTML = '<div class="empty">현재 승인 대기 중인 신청이 없습니다.</div>';
+        return;
+      }
+
+      pendingQueue.innerHTML = pending
+        .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
+        .map(item => `
+          <div class="queue-item">
+            <img class="thumb" src="${escapeHtml(item.thumbnailAuto || createFallbackThumbnail(item.simulationTitle, item.subject))}" alt="${escapeHtml(item.simulationTitle)} 썸네일">
+            <div class="card-top">
+              <div>
+                <div class="badge ${statusClass(item.status)}">${statusLabel(item.status)}</div>
+                <h3 style="margin:12px 0 4px; font-size:20px;">${escapeHtml(item.simulationTitle)}</h3>
+                <div class="small">${escapeHtml(item.studentName)} · ${escapeHtml(item.className)} · ${escapeHtml(item.subject)}</div>
+              </div>
+              <div class="small">${escapeHtml(item.submittedAt)}</div>
+            </div>
+            <div class="meta">${escapeHtml(item.summary)}</div>
+            <div class="meta">교사 메모: ${escapeHtml(item.teacherMessage || "없음")}</div>
+            <div class="link-row">
+              <span class="file-chip">${escapeHtml(item.fileName || "링크 전용")}</span>
+              <span class="small">${escapeHtml(formatBytes(item.fileSize))}</span>
+            </div>
+            <div class="link-row">
+              <a href="${escapeHtml(getLaunchUrl(item))}" target="_blank" rel="noopener noreferrer">미리 열어보기</a>
+            </div>
+            <div class="queue-actions">
+              <button class="btn btn-primary" type="button" data-action="approve" data-id="${item.id}">승인</button>
+              <button class="btn btn-danger" type="button" data-action="reject" data-id="${item.id}">반려</button>
+            </div>
+          </div>
+        `)
+        .join("");
+    }
+
+    function updateSummary(items) {
+      const approved = items.filter(item => item.status === "approved");
+      const pending = items.filter(item => item.status === "pending");
+      const latest = [...items].sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0];
+
+      document.getElementById("approvedCount").textContent = approved.length;
+      document.getElementById("pendingCount").textContent = pending.length;
+      document.getElementById("latestStudent").textContent = latest ? latest.studentName : "-";
+    }
+
+    function renderAll() {
+      const items = loadSubmissions();
+      renderApprovedBoard(items);
+      renderDashboard(items);
+      updateSummary(items);
+    }
+
+    submissionForm.addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const formData = new FormData(submissionForm);
+      const file = formData.get("simulationFile");
+      if (!(file instanceof File) || !file.size) {
+        submissionStatus.textContent = "업로드할 파일을 선택해야 합니다.";
+        return;
+      }
+
+      submissionStatus.textContent = "파일을 읽고 신청서를 저장하는 중입니다...";
+
+      try {
+        const filePayload = await buildFilePayload(
+          file,
+          String(formData.get("simulationTitle") || "").trim(),
+          String(formData.get("subject") || "").trim()
+        );
+
+        const newItem = {
+          id: crypto.randomUUID(),
+          studentName: String(formData.get("studentName") || "").trim(),
+          className: String(formData.get("className") || "").trim(),
+          simulationTitle: String(formData.get("simulationTitle") || "").trim(),
+          subject: String(formData.get("subject") || "").trim(),
+          simulationUrl: String(formData.get("simulationUrl") || "").trim(),
+          summary: String(formData.get("summary") || "").trim(),
+          teacherMessage: String(formData.get("teacherMessage") || "").trim(),
+          status: "pending",
+          submittedAt: getNowStamp(),
+          ...filePayload
+        };
+
+        const items = loadSubmissions();
+        items.push(newItem);
+        saveSubmissions(items);
+        submissionForm.reset();
+
+        submissionStatus.textContent = `${newItem.studentName} 학생의 "${newItem.simulationTitle}" 신청이 접수되었습니다. 현재 상태는 승인 대기입니다.`;
+        renderAll();
+      } catch (error) {
+        console.error(error);
+        if (error instanceof DOMException || /quota/i.test(String(error?.message))) {
+          submissionStatus.textContent = "파일이 너무 커서 브라우저 저장 한도를 넘었습니다. 파일을 더 작게 줄여서 다시 올려 주세요.";
+          return;
+        }
+        submissionStatus.textContent = `업로드 처리 중 오류가 발생했습니다: ${error.message}`;
+      }
+    });
+
+    document.getElementById("adminLoginBtn").addEventListener("click", () => {
+      if (adminPasswordInput.value === ADMIN_PASSWORD) {
+        isAdminOpen = true;
+        dashboard.classList.add("show");
+        adminStatus.textContent = "관리자 인증이 완료되었습니다. 아래에서 승인 대기 목록을 검토할 수 있습니다.";
+        renderAll();
+      } else {
+        isAdminOpen = false;
+        dashboard.classList.remove("show");
+        adminStatus.textContent = "비밀번호가 올바르지 않습니다.";
+      }
+    });
+
+    document.getElementById("adminLogoutBtn").addEventListener("click", () => {
+      isAdminOpen = false;
+      adminPasswordInput.value = "";
+      dashboard.classList.remove("show");
+      adminStatus.textContent = "관리자 화면을 닫았습니다.";
+    });
+
+    pendingQueue.addEventListener("click", event => {
+      const button = event.target.closest("button[data-action]");
+      if (!button || !isAdminOpen) return;
+
+      const { action, id } = button.dataset;
+      const items = loadSubmissions();
+      const target = items.find(item => item.id === id);
+      if (!target) return;
+
+      target.status = action === "approve" ? "approved" : "rejected";
+      saveSubmissions(items);
+      renderAll();
+      adminStatus.textContent = `"${target.simulationTitle}" 항목을 ${action === "approve" ? "승인" : "반려"}했습니다.`;
+    });
+
+    renderAll();
+  </script>
+</body>
+
+</html>
