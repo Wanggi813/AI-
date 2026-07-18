@@ -7,18 +7,20 @@
   <title>에너지 오개념 진단소</title>
   <style>
     :root {
-      --bg: #f4efe7;
-      --paper: #fffaf2;
-      --ink: #1d2433;
-      --muted: #636b74;
-      --line: rgba(29, 36, 51, 0.12);
+      --bg: #f8efe1;
+      --paper: #fffaf1;
+      --ink: #3a2c22;
+      --muted: #8a7360;
+      --line: rgba(58, 41, 28, 0.14);
       --brand: #d95d39;
       --brand-deep: #ad3f20;
-      --navy: #1f365c;
-      --teal: #2f7f73;
-      --gold: #efb84a;
+      --navy: #7c4a32;
+      --teal: #c9863f;
+      --gold: #eab54a;
       --danger: #b64040;
-      --shadow: 0 22px 60px rgba(31, 54, 92, 0.12);
+      --success: #8a6216;
+      --success-bg: #fbf0da;
+      --shadow: 0 22px 60px rgba(90, 54, 24, 0.14);
     }
 
     * {
@@ -29,9 +31,9 @@
       margin: 0;
       font-family: "Pretendard", "Malgun Gothic", sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(239, 184, 74, 0.24), transparent 28%),
-        radial-gradient(circle at top right, rgba(47, 127, 115, 0.18), transparent 30%),
-        linear-gradient(180deg, #f8f2e9 0%, var(--bg) 100%);
+        radial-gradient(circle at top left, rgba(239, 184, 74, 0.26), transparent 28%),
+        radial-gradient(circle at top right, rgba(217, 93, 57, 0.14), transparent 30%),
+        linear-gradient(180deg, #fbf3e6 0%, var(--bg) 100%);
       color: var(--ink);
     }
 
@@ -46,7 +48,7 @@
       overflow: hidden;
       padding: 34px;
       border-radius: 30px;
-      background: linear-gradient(135deg, rgba(31, 54, 92, 0.96), rgba(47, 127, 115, 0.88));
+      background: linear-gradient(135deg, rgba(124, 74, 50, 0.97) 0%, rgba(201, 134, 63, 0.92) 65%, rgba(234, 181, 74, 0.88) 100%);
       color: #fffdf8;
       box-shadow: var(--shadow);
     }
@@ -341,8 +343,8 @@
     }
 
     .misconception-card.clear {
-      border-color: rgba(47, 127, 115, 0.35);
-      background: #f0f8f5;
+      border-color: rgba(138, 98, 22, 0.3);
+      background: #fdf8ec;
     }
 
     .misconception-title {
@@ -367,8 +369,8 @@
     }
 
     .pill-clear {
-      background: #dbf4ec;
-      color: #116454;
+      background: var(--success-bg);
+      color: var(--success);
     }
 
     .misconception-text {
@@ -477,23 +479,23 @@
       margin-top: 14px;
       padding: 14px 18px;
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      color: #fffdf8;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      color: var(--muted);
     }
 
     .references-box summary {
       cursor: pointer;
       font-size: 13px;
       font-weight: 700;
-      color: #fffdf8;
+      color: var(--brand-deep);
     }
 
     .references-body {
       margin-top: 10px;
       font-size: 12.5px;
       line-height: 1.7;
-      color: rgba(255, 253, 248, 0.86);
+      color: var(--muted);
     }
 
     .references-body ul {
@@ -573,8 +575,8 @@
     }
 
     .tag-chip.none {
-      background: #dbf4ec;
-      color: #116454;
+      background: var(--success-bg);
+      color: var(--success);
     }
 
     .caret {
