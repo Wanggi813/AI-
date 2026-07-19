@@ -51,9 +51,17 @@ export default async function handler(req, res) {
     return;
   }
 
-  const apiKey = process.env.GROQ_API_KEY;
+  const apiKey = (process.env.GROQ_API_KEY || "").trim().replace(/^["']|["']$/g, "");
   if (!apiKey) {
     res.status(500).json({ error: "GROQ_API_KEY is not configured on the server" });
+    return;
+  }
+  if (!apiKey.startsWith("gsk_")) {
+    console.error("GROQ_API_KEY does not look like a Groq key (should start with gsk_)");
+    res.status(500).json({
+      error: "GROQ_API_KEY looks malformed",
+      detail: `key starts with "${apiKey.slice(0, 4)}", expected "gsk_"`
+    });
     return;
   }
 
