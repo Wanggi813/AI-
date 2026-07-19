@@ -12,14 +12,14 @@
       --ink: #3a2c22;
       --muted: #8a7360;
       --line: rgba(58, 41, 28, 0.14);
-      --brand: #d95d39;
-      --brand-deep: #ad3f20;
-      --navy: #7c4a32;
-      --teal: #c9863f;
+      --brand: #1f6b47;
+      --brand-deep: #123f2b;
+      --navy: #1f4d38;
+      --teal: #dda43a;
       --gold: #eab54a;
       --danger: #b64040;
-      --success: #8a6216;
-      --success-bg: #fbf0da;
+      --success: #2f7d52;
+      --success-bg: #e6f3ec;
       --shadow: 0 22px 60px rgba(90, 54, 24, 0.14);
     }
 
@@ -32,7 +32,7 @@
       font-family: "Pretendard", "Malgun Gothic", sans-serif;
       background:
         radial-gradient(circle at top left, rgba(239, 184, 74, 0.26), transparent 28%),
-        radial-gradient(circle at top right, rgba(217, 93, 57, 0.14), transparent 30%),
+        radial-gradient(circle at top right, rgba(31, 107, 71, 0.12), transparent 30%),
         linear-gradient(180deg, #fbf3e6 0%, var(--bg) 100%);
       color: var(--ink);
     }
@@ -48,7 +48,7 @@
       overflow: hidden;
       padding: 34px;
       border-radius: 30px;
-      background: linear-gradient(135deg, rgba(124, 74, 50, 0.97) 0%, rgba(201, 134, 63, 0.92) 65%, rgba(234, 181, 74, 0.88) 100%);
+      background: linear-gradient(135deg, rgba(18, 63, 43, 0.97) 0%, rgba(31, 107, 71, 0.92) 60%, rgba(221, 164, 58, 0.88) 100%);
       color: #fffdf8;
       box-shadow: var(--shadow);
     }
@@ -59,9 +59,21 @@
       inset: auto -60px -90px auto;
       width: 260px;
       height: 260px;
-      background: rgba(239, 184, 74, 0.22);
+      background: rgba(31, 107, 71, 0.22);
       border-radius: 50%;
       filter: blur(8px);
+    }
+
+    .hero-illustration {
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      transform: translateY(-50%);
+      width: 260px;
+      height: 260px;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.95;
     }
 
     .hero-top {
@@ -208,8 +220,8 @@
 
     input:focus,
     select:focus {
-      border-color: rgba(217, 93, 57, 0.55);
-      box-shadow: 0 0 0 4px rgba(217, 93, 57, 0.12);
+      border-color: rgba(31, 107, 71, 0.55);
+      box-shadow: 0 0 0 4px rgba(31, 107, 71, 0.12);
     }
 
     .help {
@@ -308,8 +320,8 @@
     }
 
     .option:hover {
-      border-color: rgba(217, 93, 57, 0.45);
-      background: #fdf6ec;
+      border-color: rgba(31, 107, 71, 0.45);
+      background: #eef6f0;
     }
 
     .option input {
@@ -320,7 +332,7 @@
 
     .option.selected {
       border-color: var(--brand);
-      background: #fdf1e9;
+      background: #e3f1e8;
     }
 
     .quiz-nav {
@@ -370,8 +382,8 @@
     }
 
     .misconception-card.clear {
-      border-color: rgba(138, 98, 22, 0.3);
-      background: #fdf8ec;
+      border-color: rgba(47, 125, 82, 0.3);
+      background: #eef7f1;
     }
 
     .misconception-title {
@@ -480,6 +492,10 @@
       .hero {
         padding: 24px;
       }
+
+      .hero-illustration {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -487,6 +503,27 @@
 <body>
   <div class="shell">
     <section class="hero">
+      <svg class="hero-illustration" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="none" stroke="rgba(255,253,248,0.4)" stroke-width="3" stroke-linecap="round">
+          <ellipse cx="215" cy="150" rx="120" ry="46" transform="rotate(15 215 150)" />
+          <ellipse cx="215" cy="150" rx="120" ry="46" transform="rotate(-35 215 150)" />
+          <ellipse cx="215" cy="150" rx="120" ry="46" transform="rotate(75 215 150)" />
+          <circle cx="215" cy="150" r="58" stroke-width="4" />
+          <path d="M188 195 h44 M192 209 h36 M196 223 h28" stroke-width="4" />
+          <g transform="translate(285,265)">
+            <rect x="0" y="0" width="70" height="34" rx="6" stroke-width="3" />
+            <line x1="16" y1="8" x2="16" y2="26" stroke-width="3" />
+            <line x1="32" y1="4" x2="32" y2="30" stroke-width="3" />
+          </g>
+        </g>
+        <g stroke="none">
+          <circle cx="335" cy="150" r="6" fill="rgba(234,181,74,0.95)" />
+          <circle cx="118" cy="192" r="6" fill="rgba(234,181,74,0.95)" />
+          <circle cx="258" cy="255" r="6" fill="rgba(234,181,74,0.95)" />
+          <path d="M215 100 q10 -18 20 -18 q10 0 18 18 q8 20 -18 30 q-28 -10 -20 -30 Z" fill="rgba(234,181,74,0.35)" />
+          <path d="M78 55 L48 108 L70 108 L40 172 L100 100 L72 100 Z" fill="rgba(234,181,74,0.75)" />
+        </g>
+      </svg>
       <div class="hero-top">
         <div>
           <div class="eyebrow">에너지 단원 사전 진단</div>
