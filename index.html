@@ -570,7 +570,8 @@
         <form id="introForm">
           <div class="field">
             <label for="studentName">이름</label>
-            <input id="studentName" type="text" placeholder="예: 김하늘" required>
+            <input id="studentName" type="text" placeholder="예: 김하늘" pattern="[가-힣]+"
+              title="한글 이름만 입력할 수 있습니다" required>
           </div>
           <div class="field">
             <label for="classNumber">학급</label>
@@ -653,7 +654,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import {
-      getFirestore, collection, addDoc, doc, updateDoc
+      getFirestore, doc, getDoc, setDoc, updateDoc
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     // 교사용 분석 페이지(energy-misconceptions-teacher.html)와 반드시 동일한 값을 사용하세요.
@@ -795,13 +796,17 @@
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
 
-    let student = { name: "", studentNumber: "", className: "" };
+    let student = { name: "", studentNumber: "", className: "", submissionId: "" };
     let currentIndex = 0;
     const answers = new Array(QUESTIONS.length).fill(null); // "misconception" | "correct"
 
-    async function submitRecord(record) {
-      const docRef = await addDoc(collection(db, SUBMISSIONS_COLLECTION), record);
-      return docRef.id;
+    function buildSubmissionId(name, className, studentNumber) {
+      return `${className}_${studentNumber}_${name}`.replace(/[^\w가-힣]/g, "_");
+    }
+
+    async function submitRecord(record, submissionId) {
+      await setDoc(doc(db, SUBMISSIONS_COLLECTION, submissionId), record);
+      return submissionId;
     }
 
     function escapeHtml(value) {
@@ -813,11 +818,43 @@
         .replace(/'/g, "&#039;");
     }
 
-    document.getElementById("introForm").addEventListener("submit", event => {
+    const studentNameInput = document.getElementById("studentName");
+    studentNameInput.addEventListener("input", () => {
+      studentNameInput.value = studentNameInput.value.replace(/[^가-힣]/g, "");
+    });
+
+    document.getElementById("introForm").addEventListener("submit", async event => {
       event.preventDefault();
-      student.name = document.getElementById("studentName").value.trim();
-      student.studentNumber = document.getElementById("studentNumber").value.trim();
-      student.className = `2학년 ${document.getElementById("classNumber").value}반`;
+
+      const name = studentNameInput.value.trim();
+      const studentNumber = document.getElementById("studentNumber").value.trim();
+      const className = `2학년 ${document.getElementById("classNumber").value}반`;
+      const submissionId = buildSubmissionId(name, className, studentNumber);
+
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = "확인 중...";
+
+      try {
+        const existing = await getDoc(doc(db, SUBMISSIONS_COLLECTION, submissionId));
+        if (existing.exists()) {
+          alert("이미 제출한 기록이 있습니다. 같은 학생은 한 번만 응시할 수 있습니다.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "진단 시작하기";
+          return;
+        }
+      } catch (error) {
+        // 중복 확인에 실패해도 진단은 계속 진행하고, 최종 제출 시점의 보안 규칙이 중복을 막아줍니다.
+      }
+
+      student.name = name;
+      student.studentNumber = studentNumber;
+      student.className = className;
+      student.submissionId = submissionId;
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = "진단 시작하기";
+
       introPanel.classList.add("hidden");
       quizPanel.classList.remove("hidden");
       currentIndex = 0;
@@ -904,9 +941,12 @@
       nextBtn.textContent = "저장 중...";
 
       try {
-        record.id = await submitRecord(record);
+        record.id = await submitRecord(record, student.submissionId);
       } catch (error) {
-        alert("결과를 저장하는 중 오류가 발생했습니다. 인터넷 연결과 Firebase 설정을 확인하고 다시 시도해 주세요.\n" + error.message);
+        const message = error.code === "permission-denied"
+          ? "이미 제출한 기록이 있어 저장할 수 없습니다. 같은 학생은 한 번만 응시할 수 있습니다."
+          : "결과를 저장하는 중 오류가 발생했습니다. 인터넷 연결과 Firebase 설정을 확인하고 다시 시도해 주세요.\n" + error.message;
+        alert(message);
         nextBtn.disabled = false;
         nextBtn.textContent = "결과 보기";
         return;
