@@ -1,7 +1,7 @@
 // Vercel Serverless Function (Node.js runtime).
 // GEMINI_API_KEY는 Vercel 프로젝트 설정 > Environment Variables에만 등록하세요 (절대 클라이언트 코드에 넣지 않기).
 
-const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_MODEL = "gemini-1.5-flash";
 
 const RESPONSE_SCHEMA = {
   type: "object",
@@ -15,9 +15,7 @@ const RESPONSE_SCHEMA = {
           question: { type: "string" },
           options: {
             type: "array",
-            items: { type: "string" },
-            minItems: 4,
-            maxItems: 4
+            items: { type: "string" }
           },
           correctIndex: { type: "integer" },
           explanation: { type: "string" }
@@ -83,6 +81,7 @@ export default async function handler(req, res) {
 
     if (!geminiRes.ok) {
       const detail = await geminiRes.text();
+      console.error("Gemini API error", geminiRes.status, detail);
       res.status(502).json({ error: "Gemini API error", detail });
       return;
     }
@@ -91,13 +90,15 @@ export default async function handler(req, res) {
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!text) {
-      res.status(502).json({ error: "Gemini API returned no content" });
+      console.error("Gemini API returned no content", JSON.stringify(data));
+      res.status(502).json({ error: "Gemini API returned no content", detail: JSON.stringify(data) });
       return;
     }
 
     const parsed = JSON.parse(text);
     res.status(200).json(parsed);
   } catch (error) {
+    console.error("generate-feedback failed", error);
     res.status(500).json({ error: "Failed to generate feedback", detail: error.message });
   }
 }
