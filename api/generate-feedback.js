@@ -1,7 +1,7 @@
 // Vercel Serverless Function (Node.js runtime).
 // GEMINI_API_KEY는 Vercel 프로젝트 설정 > Environment Variables에만 등록하세요 (절대 클라이언트 코드에 넣지 않기).
 
-const GEMINI_MODEL = "gemini-1.5-flash";
+const GEMINI_MODEL = "gemini-2.0-flash";
 
 const RESPONSE_SCHEMA = {
   type: "object",
