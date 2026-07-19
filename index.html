@@ -819,7 +819,16 @@
     }
 
     const studentNameInput = document.getElementById("studentName");
+    let isComposingName = false;
+    studentNameInput.addEventListener("compositionstart", () => {
+      isComposingName = true;
+    });
+    studentNameInput.addEventListener("compositionend", () => {
+      isComposingName = false;
+      studentNameInput.value = studentNameInput.value.replace(/[^가-힣]/g, "");
+    });
     studentNameInput.addEventListener("input", () => {
+      if (isComposingName) return; // 한글 조합 중에는 값을 건드리지 않아야 IME가 정상 동작함
       studentNameInput.value = studentNameInput.value.replace(/[^가-힣]/g, "");
     });
 
