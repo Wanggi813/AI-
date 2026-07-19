@@ -889,20 +889,42 @@
       document.getElementById("scoreMisconceptions").textContent = `${record.misconceptions.length}개`;
       document.getElementById("scoreName").textContent = `${record.name || "-"} (${record.className || "-"} ${record.studentNumber || "-"}번)`;
 
+      const hitQuestions = QUESTIONS.filter(q => record.misconceptions.includes(q.tag));
+      const clearQuestions = QUESTIONS.filter(q => !record.misconceptions.includes(q.tag));
       const list = document.getElementById("misconceptionList");
-      list.innerHTML = QUESTIONS.map(q => {
-        const hit = record.misconceptions.includes(q.tag);
-        return `
-          <div class="misconception-card ${hit ? "hit" : "clear"}">
+
+      if (!hitQuestions.length) {
+        list.innerHTML = `
+          <div class="misconception-card clear">
             <div class="misconception-title">
-              <span class="pill ${hit ? "pill-hit" : "pill-clear"}">${hit ? "오개념 발견" : "정확히 이해함"}</span>
-              ${escapeHtml(q.tagLabel)}
+              <span class="pill pill-clear">완벽해요!</span>
+              모든 문항을 과학적 개념으로 답했습니다.
             </div>
-            <div class="small" style="margin-bottom:6px;">참고: ${escapeHtml(q.framework)}</div>
-            <div class="misconception-text">${q.explain}</div>
           </div>
         `;
-      }).join("");
+      } else {
+        list.innerHTML = `
+          <h3 style="margin:0 0 10px;font-size:16px;">다시 살펴보면 좋을 개념</h3>
+          ${hitQuestions.map(q => `
+            <div class="misconception-card hit">
+              <div class="misconception-title">
+                <span class="pill pill-hit">오개념 발견</span>
+                ${escapeHtml(q.tagLabel)}
+              </div>
+              <div class="misconception-text">${q.explain}</div>
+            </div>
+          `).join("")}
+        `;
+      }
+
+      if (clearQuestions.length) {
+        list.innerHTML += `
+          <div style="margin-top:18px;">
+            <div class="small" style="margin-bottom:8px;">정확히 이해한 개념</div>
+            ${clearQuestions.map(q => `<span class="pill pill-clear" style="margin:0 6px 6px 0;">${escapeHtml(q.tagLabel)}</span>`).join("")}
+          </div>
+        `;
+      }
     }
 
     async function loadFeedbackQuestions(record) {
