@@ -99,11 +99,13 @@
     }
 
     .btn {
+      display: inline-block;
       border: 0;
       border-radius: 14px;
       padding: 13px 18px;
       font-size: 15px;
       font-weight: 700;
+      text-decoration: none;
       cursor: pointer;
       transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
     }
@@ -214,6 +216,31 @@
       font-size: 13px;
       color: var(--muted);
       line-height: 1.5;
+    }
+
+    .class-picker {
+      display: flex;
+      gap: 8px;
+    }
+
+    .grade-badge {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-radius: 14px;
+      background: #f3ead7;
+      color: var(--navy);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .class-picker select {
+      flex: 1;
+    }
+
+    .class-picker input {
+      width: 80px;
+      flex: 0 0 auto;
     }
 
     .progress-track {
@@ -397,17 +424,6 @@
       line-height: 1.6;
     }
 
-    .admin-entry {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .admin-entry input {
-      flex: 1 1 220px;
-    }
-
     .status-box {
       margin-top: 4px;
       padding: 12px 16px;
@@ -416,53 +432,6 @@
       color: var(--navy);
       font-size: 14px;
       line-height: 1.6;
-    }
-
-    .dashboard {
-      display: none;
-    }
-
-    .dashboard.show {
-      display: block;
-    }
-
-    .freq-row {
-      display: grid;
-      grid-template-columns: 200px 1fr 60px;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-
-    .freq-bar-track {
-      height: 12px;
-      border-radius: 999px;
-      background: #eee3d1;
-      overflow: hidden;
-    }
-
-    .freq-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--gold), var(--brand));
-    }
-
-    .roster {
-      display: grid;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .roster-item {
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
     }
 
     .hidden {
@@ -503,93 +472,8 @@
       padding-left: 18px;
     }
 
-    .category-label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--navy);
-      margin: 22px 0 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .category-label .small {
-      font-weight: 400;
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .toolbar-right {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .class-select {
-      max-width: 220px;
-    }
-
-    .roster-item {
-      cursor: pointer;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .roster-item-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .roster-detail {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--line);
-      display: none;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .roster-detail.show {
-      display: flex;
-    }
-
-    .tag-chip {
-      display: inline-flex;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: #fbe8e5;
-      color: var(--danger);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .tag-chip.none {
-      background: var(--success-bg);
-      color: var(--success);
-    }
-
-    .caret {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
     @media (max-width: 700px) {
       .result-summary {
-        grid-template-columns: 1fr;
-      }
-
-      .freq-row {
         grid-template-columns: 1fr;
       }
 
@@ -614,7 +498,7 @@
         </div>
       </div>
       <div class="hero-actions">
-        <button class="btn btn-primary" type="button" id="openTeacherBtn">교사용 결과 보기</button>
+        <a class="btn btn-primary" href="energy-misconceptions-teacher.html" target="_blank" rel="noopener">교사용 분석 대시보드 열기 ↗</a>
       </div>
     </section>
 
@@ -624,11 +508,17 @@
         <p>각 문항은 과학교육 분야에서 보고된 에너지 오개념 유형(대안적 개념 프레임워크)을 바탕으로 구성했습니다.</p>
         <ul>
           <li>Watts, D. M. (1983). Some alternative views of energy. <i>Physics Education</i>, 18(5), 213–217.</li>
-          <li>Duit, R. (1984). Learning the energy concept in school: Empirical results from The Philippines and West Germany. <i>Physics Education</i>, 19(2), 59–66.</li>
-          <li>Trumper, R. (1990). Being constructive: An alternative approach to the teaching of the energy concept—part one. <i>International Journal of Science Education</i>, 12(4), 343–354.</li>
-          <li>Trumper, R., &amp; Gorsky, P. (1993). Learning about energy: The influence of alternative frameworks, cognitive levels, and closed-mindedness. <i>Journal of Research in Science Teaching</i>, 30(7), 637–648.</li>
-          <li>Neumann, K., Viering, T., Boone, W. J., &amp; Fischer, H. E. (2013). Towards a learning progression of energy. <i>Journal of Research in Science Teaching</i>, 50(2), 162–188.</li>
-          <li>Lawson, R. A., &amp; McDermott, L. C. (1987). Student understanding of the work-energy and impulse-momentum theorems. <i>American Journal of Physics</i>, 55(9), 811–817.</li>
+          <li>Duit, R. (1984). Learning the energy concept in school: Empirical results from The Philippines and West
+            Germany. <i>Physics Education</i>, 19(2), 59–66.</li>
+          <li>Trumper, R. (1990). Being constructive: An alternative approach to the teaching of the energy concept—part
+            one. <i>International Journal of Science Education</i>, 12(4), 343–354.</li>
+          <li>Trumper, R., &amp; Gorsky, P. (1993). Learning about energy: The influence of alternative frameworks,
+            cognitive levels, and closed-mindedness. <i>Journal of Research in Science Teaching</i>, 30(7), 637–648.
+          </li>
+          <li>Neumann, K., Viering, T., Boone, W. J., &amp; Fischer, H. E. (2013). Towards a learning progression of
+            energy. <i>Journal of Research in Science Teaching</i>, 50(2), 162–188.</li>
+          <li>Lawson, R. A., &amp; McDermott, L. C. (1987). Student understanding of the work-energy and
+            impulse-momentum theorems. <i>American Journal of Physics</i>, 55(9), 811–817.</li>
         </ul>
       </div>
     </details>
@@ -646,8 +536,22 @@
             <input id="studentName" type="text" placeholder="예: 김하늘" required>
           </div>
           <div class="field">
-            <label for="className">학급</label>
-            <input id="className" type="text" placeholder="예: 2학년 3반" required>
+            <label for="classNumber">학급</label>
+            <div class="class-picker">
+              <span class="grade-badge">2학년</span>
+              <select id="classNumber" required>
+                <option value="" disabled selected>반 선택</option>
+                <option value="1">1반</option>
+                <option value="2">2반</option>
+                <option value="3">3반</option>
+                <option value="4">4반</option>
+                <option value="5">5반</option>
+                <option value="6">6반</option>
+                <option value="7">7반</option>
+              </select>
+              <input id="studentNumber" type="number" min="1" max="40" placeholder="번호" required>
+              <span class="grade-badge">번</span>
+            </div>
           </div>
           <button class="btn btn-primary" type="submit">진단 시작하기</button>
         </form>
@@ -695,74 +599,39 @@
         </div>
         <div id="misconceptionList"></div>
         <hr class="section-divider">
-        <p class="small">이 결과는 이 브라우저(localStorage)에 저장되어, 교사가 "교사용 결과 보기"에서 학급 전체 통계를 확인할 수 있습니다.</p>
+
+        <div id="feedbackSection">
+          <h3 style="margin:0 0 10px;font-size:18px;">나를 위한 맞춤 피드백 문제</h3>
+          <div class="status-box" id="feedbackStatus"></div>
+          <div id="feedbackQuestions"></div>
+        </div>
+
+        <hr class="section-divider">
+        <p class="small">이 결과는 클라우드 데이터베이스에 저장되어, 교사가 "교사용 결과 보기"에서 실시간으로 학급 전체 통계를 확인할 수 있습니다.</p>
         <button class="btn btn-soft" type="button" id="retakeBtn">다시 진단하기</button>
       </div>
     </section>
   </div>
 
-  <!-- 교사용 모달 -->
-  <div class="modal-backdrop hidden" id="teacherModal" style="position:fixed;inset:0;background:rgba(18,26,42,0.58);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50;">
-    <div style="width:min(880px,100%);max-height:min(88vh,920px);overflow:auto;background:var(--paper);border:1px solid rgba(255,255,255,0.55);border-radius:28px;box-shadow:0 30px 80px rgba(10,18,30,0.28);">
-      <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:24px 24px 0;">
-        <div>
-          <h2 style="margin:0;font-size:24px;">교사용 학급 결과</h2>
-          <p style="margin:10px 0 0;color:var(--muted);line-height:1.6;">비밀번호를 입력하면 학생들이 어떤 오개념을 얼마나 갖고 있는지 확인할 수 있습니다.</p>
-        </div>
-        <button class="btn btn-ghost" type="button" id="closeTeacherBtn" style="flex:0 0 auto;padding:8px 13px;font-size:22px;line-height:1;">×</button>
-      </div>
-      <div style="padding:24px;">
-        <div class="admin-entry">
-          <input id="teacherPassword" type="password" placeholder="교사용 비밀번호 입력">
-          <button class="btn btn-primary" type="button" id="teacherLoginBtn">결과 열기</button>
-          <button class="btn btn-danger" type="button" id="clearDataBtn" style="background:#fbe8e5;color:var(--danger);">전체 기록 삭제</button>
-        </div>
-        <div class="status-box" id="teacherStatus">비밀번호 hshs2026을 입력하면 학급 통계가 열립니다.</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import {
+      getFirestore, collection, addDoc
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-        <div class="dashboard" id="teacherDashboard">
-          <div class="toolbar">
-            <div class="field" style="gap:4px;">
-              <label for="classFilter" style="font-size:12px;">학급 필터</label>
-              <select id="classFilter" class="class-select"></select>
-            </div>
-            <div class="toolbar-right">
-              <span class="small" id="lastUpdatedLabel"></span>
-              <button class="btn btn-soft" type="button" id="exportCsvBtn">CSV로 내보내기</button>
-            </div>
-          </div>
+    // 교사용 분석 페이지(energy-misconceptions-teacher.html)와 반드시 동일한 값을 사용하세요.
+    const firebaseConfig = {
+      apiKey: "AIzaSyDCMFAf1z00wfQ3DwUOPqYZ575O_qZ62Sw",
+      authDomain: "nasdjvn.firebaseapp.com",
+      projectId: "nasdjvn",
+      storageBucket: "nasdjvn.firebasestorage.app",
+      messagingSenderId: "287602374316",
+      appId: "1:287602374316:web:45ccebc3a386eed72c9109"
+    };
 
-          <div class="result-summary">
-            <div class="result-stat">
-              <span>참여한 학생 수</span>
-              <strong id="teacherTotal">0</strong>
-            </div>
-            <div class="result-stat">
-              <span>평균 정답 수 (정확한 개념 응답)</span>
-              <strong id="teacherAvg">0 / 10</strong>
-            </div>
-            <div class="result-stat">
-              <span>가장 흔한 오개념</span>
-              <strong id="teacherTopMisconception">-</strong>
-            </div>
-          </div>
-
-          <div class="category-label">질적 오개념 프레임워크 <span class="small">(Watts, 1983; Trumper, 1990/1991 등 — 에너지 개념 자체에 대한 사고방식)</span></div>
-          <div id="freqListQualitative"></div>
-
-          <div class="category-label">정량적 계산 오개념 <span class="small">(Lawson &amp; McDermott, 1987 — 운동·위치 에너지 계산 시 질량을 반영하지 못하는 오류)</span></div>
-          <div id="freqListQuantitative"></div>
-
-          <h3 style="margin:26px 0 10px;font-size:18px;">학생별 진단 기록 <span class="small" id="rosterCount"></span></h3>
-          <p class="small">항목을 클릭하면 해당 학생이 어떤 오개념을 보였는지 자세히 볼 수 있습니다.</p>
-          <div class="roster" id="rosterList"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const STORAGE_KEY = "energy-misconception-records-v1";
-    const TEACHER_PASSWORD = "hshs2026";
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
+    const SUBMISSIONS_COLLECTION = "submissions";
 
     // 각 문항은 에너지 오개념에 관한 과학교육 연구에서 보고된 대안적 개념(alternative conception) 프레임워크를 바탕으로 구성했습니다.
     // category: "qualitative"(에너지 개념 자체에 대한 사고방식) | "quantitative"(공식 적용 시 나타나는 계산 오류)
@@ -889,22 +758,12 @@
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
 
-    let student = { name: "", className: "" };
+    let student = { name: "", studentNumber: "", className: "" };
     let currentIndex = 0;
     const answers = new Array(QUESTIONS.length).fill(null); // "misconception" | "correct"
 
-    function loadRecords() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) return [];
-      try {
-        return JSON.parse(stored);
-      } catch (error) {
-        return [];
-      }
-    }
-
-    function saveRecords(records) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    async function submitRecord(record) {
+      await addDoc(collection(db, SUBMISSIONS_COLLECTION), record);
     }
 
     function escapeHtml(value) {
@@ -919,7 +778,8 @@
     document.getElementById("introForm").addEventListener("submit", event => {
       event.preventDefault();
       student.name = document.getElementById("studentName").value.trim();
-      student.className = document.getElementById("className").value.trim();
+      student.studentNumber = document.getElementById("studentNumber").value.trim();
+      student.className = `2학년 ${document.getElementById("classNumber").value}반`;
       introPanel.classList.add("hidden");
       quizPanel.classList.remove("hidden");
       currentIndex = 0;
@@ -979,7 +839,7 @@
       }
     });
 
-    function finishQuiz() {
+    async function finishQuiz() {
       progressFill.style.width = "100%";
 
       const misconceptionsHit = [];
@@ -994,22 +854,32 @@
       });
 
       const record = {
-        id: crypto.randomUUID(),
         name: student.name,
+        studentNumber: student.studentNumber,
         className: student.className,
         correctCount,
         misconceptions: misconceptionsHit,
         submittedAt: new Date().toISOString()
       };
 
-      const records = loadRecords();
-      records.push(record);
-      saveRecords(records);
+      nextBtn.disabled = true;
+      nextBtn.textContent = "저장 중...";
+
+      try {
+        await submitRecord(record);
+      } catch (error) {
+        alert("결과를 저장하는 중 오류가 발생했습니다. 인터넷 연결과 Firebase 설정을 확인하고 다시 시도해 주세요.\n" + error.message);
+        nextBtn.disabled = false;
+        nextBtn.textContent = "결과 보기";
+        return;
+      }
 
       renderResult(record);
 
       quizPanel.classList.add("hidden");
       resultPanel.classList.remove("hidden");
+
+      loadFeedbackQuestions(record);
     }
 
     function renderResult(record) {
@@ -1017,7 +887,7 @@
         `${record.name} 학생, ${QUESTIONS.length}문항 중 ${record.correctCount}문항을 과학적 개념으로 답했습니다. 아래에서 어떤 오개념이 발견되었는지 확인해 보세요.`;
       document.getElementById("scoreCorrect").textContent = `${record.correctCount} / ${QUESTIONS.length}`;
       document.getElementById("scoreMisconceptions").textContent = `${record.misconceptions.length}개`;
-      document.getElementById("scoreName").textContent = `${record.name || "-"} (${record.className || "-"})`;
+      document.getElementById("scoreName").textContent = `${record.name || "-"} (${record.className || "-"} ${record.studentNumber || "-"}번)`;
 
       const list = document.getElementById("misconceptionList");
       list.innerHTML = QUESTIONS.map(q => {
@@ -1035,6 +905,90 @@
       }).join("");
     }
 
+    async function loadFeedbackQuestions(record) {
+      const statusBox = document.getElementById("feedbackStatus");
+      const container = document.getElementById("feedbackQuestions");
+      container.innerHTML = "";
+
+      if (!record.misconceptions.length) {
+        statusBox.textContent = "발견된 오개념이 없어요! 모든 문항을 과학적 개념으로 답했습니다.";
+        return;
+      }
+
+      statusBox.textContent = "발견된 오개념을 바탕으로 맞춤 문제를 만들고 있어요...";
+
+      const misconceptionPayload = QUESTIONS
+        .filter(q => record.misconceptions.includes(q.tag))
+        .map(q => ({ tag: q.tag, label: q.tagLabel, framework: q.framework }));
+
+      try {
+        const response = await fetch("/api/generate-feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ misconceptions: misconceptionPayload })
+        });
+
+        if (!response.ok) {
+          throw new Error(`서버 응답 오류 (${response.status})`);
+        }
+
+        const data = await response.json();
+        if (!Array.isArray(data.questions) || !data.questions.length) {
+          throw new Error("문제를 생성하지 못했습니다.");
+        }
+
+        statusBox.textContent = "";
+        renderFeedbackQuestions(data.questions, misconceptionPayload);
+      } catch (error) {
+        statusBox.textContent = "맞춤 문제를 불러오지 못했습니다. (이 기능은 Vercel에 배포된 상태에서만 동작합니다) " + error.message;
+      }
+    }
+
+    function renderFeedbackQuestions(questions, misconceptionPayload) {
+      const container = document.getElementById("feedbackQuestions");
+      const labelByTag = Object.fromEntries(misconceptionPayload.map(m => [m.tag, m.label]));
+
+      container.innerHTML = questions.map((q, index) => `
+        <div class="question-card" data-index="${index}" style="margin-top:14px;">
+          <div class="question-tag">${escapeHtml(labelByTag[q.tag] || q.tag)}</div>
+          <div class="question-text">${escapeHtml(q.question)}</div>
+          <div class="option-list">
+            ${q.options.map((opt, i) => `
+              <label class="option" data-feedback-index="${index}" data-option-index="${i}">
+                <input type="radio" name="feedback-option-${index}" value="${i}">
+                <span>${escapeHtml(opt)}</span>
+              </label>
+            `).join("")}
+          </div>
+          <div class="small feedback-explain hidden" style="margin-top:12px;"></div>
+        </div>
+      `).join("");
+
+      container.querySelectorAll(".option").forEach(optionEl => {
+        optionEl.addEventListener("click", () => {
+          const qIndex = Number(optionEl.dataset.feedbackIndex);
+          const optIndex = Number(optionEl.dataset.optionIndex);
+          const q = questions[qIndex];
+          const card = container.querySelector(`.question-card[data-index="${qIndex}"]`);
+
+          card.querySelectorAll(".option").forEach(el => {
+            el.classList.remove("selected");
+            el.style.borderColor = "";
+            el.style.background = "";
+          });
+
+          optionEl.classList.add("selected");
+          const isCorrect = optIndex === q.correctIndex;
+          optionEl.style.borderColor = isCorrect ? "var(--success)" : "var(--danger)";
+          optionEl.style.background = isCorrect ? "var(--success-bg)" : "#fbe8e5";
+
+          const explainEl = card.querySelector(".feedback-explain");
+          explainEl.classList.remove("hidden");
+          explainEl.innerHTML = `<b>${isCorrect ? "정답입니다!" : "다시 생각해 보세요."}</b> ${escapeHtml(q.explanation)}`;
+        });
+      });
+    }
+
     document.getElementById("retakeBtn").addEventListener("click", () => {
       answers.fill(null);
       currentIndex = 0;
@@ -1043,208 +997,6 @@
       document.getElementById("introForm").reset();
     });
 
-    // 교사용 모달
-    const teacherModal = document.getElementById("teacherModal");
-    const teacherStatus = document.getElementById("teacherStatus");
-    const teacherDashboard = document.getElementById("teacherDashboard");
-    const teacherPasswordInput = document.getElementById("teacherPassword");
-    let isTeacherOpen = false;
-
-    document.getElementById("openTeacherBtn").addEventListener("click", () => {
-      teacherModal.classList.remove("hidden");
-      window.setTimeout(() => teacherPasswordInput.focus(), 60);
-    });
-
-    document.getElementById("closeTeacherBtn").addEventListener("click", () => {
-      teacherModal.classList.add("hidden");
-    });
-
-    teacherModal.addEventListener("click", event => {
-      if (event.target === teacherModal) teacherModal.classList.add("hidden");
-    });
-
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") teacherModal.classList.add("hidden");
-    });
-
-    const classFilterSelect = document.getElementById("classFilter");
-
-    document.getElementById("teacherLoginBtn").addEventListener("click", () => {
-      if (teacherPasswordInput.value === TEACHER_PASSWORD) {
-        isTeacherOpen = true;
-        teacherDashboard.classList.add("show");
-        teacherStatus.textContent = "인증이 완료되었습니다. 아래에서 학급 통계를 확인할 수 있습니다.";
-        renderTeacherDashboard();
-      } else {
-        isTeacherOpen = false;
-        teacherDashboard.classList.remove("show");
-        teacherStatus.textContent = "비밀번호가 올바르지 않습니다.";
-      }
-    });
-
-    document.getElementById("clearDataBtn").addEventListener("click", () => {
-      if (!isTeacherOpen) {
-        teacherStatus.textContent = "먼저 비밀번호를 입력해 인증해야 삭제할 수 있습니다.";
-        return;
-      }
-      if (!confirm("저장된 모든 학생 진단 기록을 삭제할까요? 이 작업은 되돌릴 수 없습니다.")) return;
-      saveRecords([]);
-      renderTeacherDashboard();
-      teacherStatus.textContent = "모든 기록을 삭제했습니다.";
-    });
-
-    classFilterSelect.addEventListener("change", () => renderTeacherDashboard());
-
-    document.getElementById("exportCsvBtn").addEventListener("click", () => {
-      const records = getFilteredRecords();
-      if (!records.length) {
-        teacherStatus.textContent = "내보낼 기록이 없습니다.";
-        return;
-      }
-
-      const header = ["이름", "학급", "제출시각", "정답수", `총문항(${QUESTIONS.length})`, "오개념개수", ...QUESTIONS.map(q => q.tagLabel)];
-      const rows = records.map(r => [
-        r.name,
-        r.className,
-        new Date(r.submittedAt).toLocaleString("ko-KR"),
-        r.correctCount,
-        QUESTIONS.length,
-        r.misconceptions.length,
-        ...QUESTIONS.map(q => (r.misconceptions.includes(q.tag) ? "O" : ""))
-      ]);
-
-      const csvLines = [header, ...rows].map(row =>
-        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")
-      );
-      const csvContent = "﻿" + csvLines.join("\r\n");
-
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `energy-misconception-results-${new Date().toISOString().slice(0, 10)}.csv`;
-      link.click();
-      URL.revokeObjectURL(url);
-    });
-
-    function getFilteredRecords() {
-      const records = loadRecords();
-      const selectedClass = classFilterSelect.value;
-      if (!selectedClass || selectedClass === "__all__") return records;
-      return records.filter(r => (r.className || "학급 정보 없음") === selectedClass);
-    }
-
-    function populateClassFilter(records) {
-      const classes = Array.from(new Set(records.map(r => r.className || "학급 정보 없음"))).sort();
-      const current = classFilterSelect.value || "__all__";
-
-      classFilterSelect.innerHTML = [
-        `<option value="__all__">전체 학급 (${records.length}명)</option>`,
-        ...classes.map(c => {
-          const count = records.filter(r => (r.className || "학급 정보 없음") === c).length;
-          return `<option value="${escapeHtml(c)}">${escapeHtml(c)} (${count}명)</option>`;
-        })
-      ].join("");
-
-      if (classes.includes(current) || current === "__all__") {
-        classFilterSelect.value = current;
-      }
-    }
-
-    function renderFreqGroup(elementId, items, totalCount) {
-      const el = document.getElementById(elementId);
-      if (!totalCount) {
-        el.innerHTML = '<div class="empty">아직 제출된 진단 기록이 없습니다.</div>';
-        return;
-      }
-      el.innerHTML = items.map(item => {
-        const percent = Math.round((item.count / totalCount) * 100);
-        return `
-          <div class="freq-row">
-            <span>${escapeHtml(item.label)}</span>
-            <div class="freq-bar-track"><div class="freq-bar-fill" style="width:${percent}%"></div></div>
-            <span>${item.count}명 (${percent}%)</span>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function renderTeacherDashboard() {
-      const allRecords = loadRecords();
-      populateClassFilter(allRecords);
-
-      const records = getFilteredRecords();
-      document.getElementById("teacherTotal").textContent = records.length;
-      document.getElementById("rosterCount").textContent = records.length ? `(${records.length}건)` : "";
-      document.getElementById("lastUpdatedLabel").textContent = allRecords.length
-        ? `최근 제출: ${new Date([...allRecords].sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0].submittedAt).toLocaleString("ko-KR")}`
-        : "";
-
-      if (!records.length) {
-        document.getElementById("teacherAvg").textContent = `0 / ${QUESTIONS.length}`;
-        document.getElementById("teacherTopMisconception").textContent = "-";
-        renderFreqGroup("freqListQualitative", [], 0);
-        renderFreqGroup("freqListQuantitative", [], 0);
-        document.getElementById("rosterList").innerHTML = "";
-        return;
-      }
-
-      const avgCorrect = records.reduce((sum, r) => sum + r.correctCount, 0) / records.length;
-      document.getElementById("teacherAvg").textContent = `${avgCorrect.toFixed(1)} / ${QUESTIONS.length}`;
-
-      const freq = {};
-      QUESTIONS.forEach(q => { freq[q.tag] = 0; });
-      records.forEach(r => {
-        r.misconceptions.forEach(tag => {
-          freq[tag] = (freq[tag] || 0) + 1;
-        });
-      });
-
-      const sortedTags = QUESTIONS
-        .map(q => ({ tag: q.tag, label: q.tagLabel, category: q.category, count: freq[q.tag] || 0 }))
-        .sort((a, b) => b.count - a.count);
-
-      const top = sortedTags[0];
-      document.getElementById("teacherTopMisconception").textContent =
-        top && top.count > 0 ? `${top.label} (${top.count}명)` : "없음";
-
-      renderFreqGroup("freqListQualitative", sortedTags.filter(item => item.category === "qualitative"), records.length);
-      renderFreqGroup("freqListQuantitative", sortedTags.filter(item => item.category === "quantitative"), records.length);
-
-      document.getElementById("rosterList").innerHTML = records
-        .slice()
-        .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))
-        .map(r => {
-          const tagsHtml = r.misconceptions.length
-            ? QUESTIONS.filter(q => r.misconceptions.includes(q.tag))
-              .map(q => `<span class="tag-chip">${escapeHtml(q.tagLabel)}</span>`).join("")
-            : '<span class="tag-chip none">발견된 오개념 없음</span>';
-
-          return `
-            <div class="roster-item" data-id="${r.id}">
-              <div class="roster-item-head">
-                <div>
-                  <strong>${escapeHtml(r.name || "이름 없음")}</strong>
-                  <span class="small">· ${escapeHtml(r.className || "학급 정보 없음")}</span>
-                  <div class="small">정답 ${r.correctCount} / ${QUESTIONS.length} · 오개념 ${r.misconceptions.length}개</div>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px;">
-                  <span class="small">${escapeHtml(new Date(r.submittedAt).toLocaleString("ko-KR"))}</span>
-                  <span class="caret">▾</span>
-                </div>
-              </div>
-              <div class="roster-detail">${tagsHtml}</div>
-            </div>
-          `;
-        })
-        .join("");
-    }
-
-    document.getElementById("rosterList").addEventListener("click", event => {
-      const item = event.target.closest(".roster-item");
-      if (!item) return;
-      item.querySelector(".roster-detail").classList.toggle("show");
-    });
   </script>
 </body>
 

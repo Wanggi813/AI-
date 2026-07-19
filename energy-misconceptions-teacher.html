@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>에너지 오개념 진단 — 교사용 분석</title>
+  <style>
+    :root {
+      --bg: #f8efe1;
+      --paper: #fffaf1;
+      --ink: #3a2c22;
+      --muted: #8a7360;
+      --line: rgba(58, 41, 28, 0.14);
+      --brand: #d95d39;
+      --brand-deep: #ad3f20;
+      --navy: #7c4a32;
+      --teal: #c9863f;
+      --gold: #eab54a;
+      --danger: #b64040;
+      --success: #8a6216;
+      --success-bg: #fbf0da;
+      --shadow: 0 22px 60px rgba(90, 54, 24, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Malgun Gothic", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(239, 184, 74, 0.26), transparent 28%),
+        radial-gradient(circle at top right, rgba(217, 93, 57, 0.14), transparent 30%),
+        linear-gradient(180deg, #fbf3e6 0%, var(--bg) 100%);
+      color: var(--ink);
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 22px 28px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(124, 74, 50, 0.97) 0%, rgba(201, 134, 63, 0.92) 65%, rgba(234, 181, 74, 0.88) 100%);
+      color: #fffdf8;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .topbar p {
+      margin: 6px 0 0;
+      font-size: 13.5px;
+      color: rgba(255, 253, 248, 0.86);
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: white;
+    }
+
+    .btn-soft {
+      background: #f3ead7;
+      color: var(--navy);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.16);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-danger {
+      background: #fbe8e5;
+      color: var(--danger);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+    }
+
+    input,
+    select {
+      font: inherit;
+      color: inherit;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 11px 13px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(217, 93, 57, 0.55);
+      box-shadow: 0 0 0 4px rgba(217, 93, 57, 0.12);
+    }
+
+    .login-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .id-group {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .id-group input {
+      border: 0;
+      border-radius: 0;
+    }
+
+    .id-group input:focus {
+      box-shadow: none;
+    }
+
+    .id-suffix {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      background: #f3ead7;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .status-box {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: #f6efe2;
+      color: var(--navy);
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      padding: 16px;
+      border-radius: 16px;
+      background: white;
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .stat-card span {
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .stat-card strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 22px;
+    }
+
+    .category-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 18px 0 10px;
+    }
+
+    .category-label .hint {
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .freq-row {
+      display: grid;
+      grid-template-columns: 220px 1fr 90px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 9px;
+      font-size: 13.5px;
+    }
+
+    .freq-bar-track {
+      height: 11px;
+      border-radius: 999px;
+      background: #eee3d1;
+      overflow: hidden;
+    }
+
+    .freq-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--brand));
+    }
+
+    .empty {
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px dashed var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.55);
+      font-size: 13.5px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      min-width: 720px;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 12px 14px;
+      background: #f6efe2;
+      color: var(--navy);
+      font-weight: 700;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--line);
+    }
+
+    thead th.sortable {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th.sortable:hover {
+      color: var(--brand-deep);
+    }
+
+    tbody td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr.detail-row {
+      background: #fdf8ec;
+    }
+
+    tbody tr.detail-row td {
+      padding-top: 0;
+    }
+
+    .row-toggle {
+      cursor: pointer;
+      color: var(--brand-deep);
+      font-weight: 700;
+      font-size: 13px;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .tag-chip {
+      display: inline-flex;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #fbe8e5;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 700;
+      margin: 3px 4px 0 0;
+    }
+
+    .tag-chip.none {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .class-table td,
+    .class-table th {
+      padding: 10px 14px;
+    }
+
+    @media (max-width: 900px) {
+      .stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div>
+        <h1>에너지 오개념 진단 — 교사용 분석</h1>
+        <p>학생들이 제출한 진단 결과를 실시간으로 분석합니다.</p>
+      </div>
+      <div id="topbarActions"></div>
+    </div>
+
+    <div class="panel" id="loginPanel">
+      <h2>로그인</h2>
+      <div class="login-row">
+        <div class="id-group">
+          <input id="teacherId" type="text" placeholder="교사 아이디" autocomplete="username">
+          <span class="id-suffix" id="idSuffixLabel"></span>
+        </div>
+        <input id="teacherPassword" type="password" placeholder="비밀번호" autocomplete="current-password">
+        <button class="btn btn-primary" type="button" id="loginBtn">로그인</button>
+      </div>
+      <div class="status-box" id="statusBox">Firebase Authentication에 등록된 교사 계정으로 로그인하세요.</div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+      <div class="panel">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span>참여한 학생 수</span>
+            <strong id="statTotal">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>전체 평균 정답 수</span>
+            <strong id="statAvg">0 / 10</strong>
+          </div>
+          <div class="stat-card">
+            <span>참여 학급 수</span>
+            <strong id="statClasses">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>가장 흔한 오개념</span>
+            <strong id="statTopMisconception">-</strong>
+          </div>
+        </div>
+
+        <div class="category-label">질적 오개념 프레임워크 <span class="hint">(Watts, 1983; Trumper, 1990/1991 등 — 에너지 개념 자체에 대한 사고방식)</span></div>
+        <div id="freqQualitative"></div>
+
+        <div class="category-label">정량적 계산 오개념 <span class="hint">(Lawson &amp; McDermott, 1987 — 질량을 반영하지 못하는 계산 오류)</span></div>
+        <div id="freqQuantitative"></div>
+      </div>
+
+      <div class="panel">
+        <h2>학급별 비교</h2>
+        <div class="table-wrap">
+          <table class="class-table">
+            <thead>
+              <tr>
+                <th>학급</th>
+                <th>참여 인원</th>
+                <th>평균 정답 수</th>
+                <th>가장 흔한 오개념</th>
+              </tr>
+            </thead>
+            <tbody id="classTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>학생별 상세 기록</h2>
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <select id="classFilter"></select>
+            <input id="searchInput" type="text" placeholder="이름 또는 번호로 검색">
+          </div>
+          <div class="toolbar-left">
+            <span id="lastUpdatedLabel" style="font-size:13px;color:var(--muted);"></span>
+            <button class="btn btn-soft" type="button" id="exportCsvBtn">CSV로 내보내기</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th class="sortable" data-key="name">이름</th>
+                <th class="sortable" data-key="studentNumber">번호</th>
+                <th class="sortable" data-key="className">학급</th>
+                <th class="sortable" data-key="correctCount">정답 수</th>
+                <th class="sortable" data-key="misconceptionCount">오개념 수</th>
+                <th class="sortable" data-key="submittedAt">제출 시각</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import {
+      getFirestore, collection, doc, deleteDoc, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import {
+      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+    // 학생용 페이지(index.html)와 반드시 동일한 값을 사용하세요.
+    const firebaseConfig = {
+      apiKey: "AIzaSyDCMFAf1z00wfQ3DwUOPqYZ575O_qZ62Sw",
+      authDomain: "nasdjvn.firebaseapp.com",
+      projectId: "nasdjvn",
+      storageBucket: "nasdjvn.firebasestorage.app",
+      messagingSenderId: "287602374316",
+      appId: "1:287602374316:web:45ccebc3a386eed72c9109"
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
+    const auth = getAuth(firebaseApp);
+    const SUBMISSIONS_COLLECTION = "submissions";
+    const TOTAL_QUESTIONS = 10;
+
+    // 학생용 페이지의 문항과 동일한 태그/분류. 문항 문구를 바꿔도 여기 목록은 그대로 두면 됩니다.
+    const MISCONCEPTION_TAGS = [
+      { tag: "anthropocentric", label: "인간·생물 중심 오개념", category: "qualitative" },
+      { tag: "ingredient", label: "에너지 물질화(재료) 오개념", category: "qualitative" },
+      { tag: "force", label: "힘-에너지 혼동", category: "qualitative" },
+      { tag: "obvious-activity", label: "'뚜렷한 활동'으로서의 에너지 오개념", category: "qualitative" },
+      { tag: "product", label: "'찌꺼기(산물)'로서의 에너지 오개념", category: "qualitative" },
+      { tag: "conservation", label: "에너지 소멸(비보존) 오개념", category: "qualitative" },
+      { tag: "flow", label: "형태 변화 없는 '흐름' 오개념", category: "qualitative" },
+      { tag: "power", label: "에너지-전력(Power) 혼동", category: "qualitative" },
+      { tag: "pe-mass", label: "위치 에너지-질량 무시 오개념", category: "quantitative" },
+      { tag: "ke-mass", label: "운동 에너지-질량 무시 오개념", category: "quantitative" }
+    ];
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    const loginPanel = document.getElementById("loginPanel");
+    const dashboard = document.getElementById("dashboard");
+    const statusBox = document.getElementById("statusBox");
+    const topbarActions = document.getElementById("topbarActions");
+    const teacherIdInput = document.getElementById("teacherId");
+    const teacherPasswordInput = document.getElementById("teacherPassword");
+    const idSuffixLabel = document.getElementById("idSuffixLabel");
+    const classFilterSelect = document.getElementById("classFilter");
+    const searchInput = document.getElementById("searchInput");
+
+    const TEACHER_EMAIL_DOMAIN = firebaseConfig.authDomain;
+    idSuffixLabel.textContent = `@${TEACHER_EMAIL_DOMAIN}`;
+    function idToEmail(id) {
+      return `${id}@${TEACHER_EMAIL_DOMAIN}`;
+    }
+
+    let allRecords = [];
+    let unsubscribeSnapshot = null;
+    let sortKey = "submittedAt";
+    let sortDir = "desc";
+    let expandedId = null;
+
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const id = teacherIdInput.value.trim();
+      const password = teacherPasswordInput.value;
+      if (!id || !password) {
+        statusBox.textContent = "아이디와 비밀번호를 모두 입력하세요.";
+        return;
+      }
+      statusBox.textContent = "로그인 중...";
+      try {
+        await signInWithEmailAndPassword(auth, idToEmail(id), password);
+        teacherPasswordInput.value = "";
+      } catch (error) {
+        statusBox.textContent = "로그인에 실패했습니다. 아이디 또는 비밀번호를 확인하세요.";
+      }
+    });
+
+    function subscribeToSubmissions() {
+      if (unsubscribeSnapshot) return;
+      unsubscribeSnapshot = onSnapshot(
+        collection(db, SUBMISSIONS_COLLECTION),
+        snapshot => {
+          allRecords = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+          render();
+        },
+        error => {
+          statusBox.textContent = "데이터를 불러오는 중 오류가 발생했습니다: " + error.message;
+        }
+      );
+    }
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        loginPanel.classList.add("hidden");
+        dashboard.classList.remove("hidden");
+        topbarActions.innerHTML = `
+          <span style="font-size:13px;margin-right:10px;">${escapeHtml(user.email)}</span>
+          <button class="btn btn-ghost" id="logoutBtn" type="button">로그아웃</button>
+          <button class="btn btn-danger" id="clearDataBtn" type="button" style="margin-left:8px;">전체 기록 삭제</button>
+        `;
+        document.getElementById("logoutBtn").addEventListener("click", () => signOut(auth));
+        document.getElementById("clearDataBtn").addEventListener("click", clearAllData);
+        subscribeToSubmissions();
+      } else {
+        loginPanel.classList.remove("hidden");
+        dashboard.classList.add("hidden");
+        topbarActions.innerHTML = "";
+        statusBox.textContent = "Firebase Authentication에 등록된 교사 계정으로 로그인하세요.";
+        if (unsubscribeSnapshot) {
+          unsubscribeSnapshot();
+          unsubscribeSnapshot = null;
+        }
+        allRecords = [];
+      }
+    });
+
+    async function clearAllData() {
+      if (!allRecords.length) {
+        statusBox.textContent = "삭제할 기록이 없습니다.";
+        return;
+      }
+      if (!confirm("저장된 모든 학생 진단 기록을 삭제할까요? 이 작업은 되돌릴 수 없습니다.")) return;
+      try {
+        await Promise.all(allRecords.map(r => deleteDoc(doc(db, SUBMISSIONS_COLLECTION, r.id))));
+      } catch (error) {
+        statusBox.textContent = "삭제 중 오류가 발생했습니다: " + error.message;
+      }
+    }
+
+    classFilterSelect.addEventListener("change", render);
+    searchInput.addEventListener("input", render);
+
+    document.querySelectorAll("th.sortable").forEach(th => {
+      th.addEventListener("click", () => {
+        const key = th.dataset.key;
+        if (sortKey === key) {
+          sortDir = sortDir === "asc" ? "desc" : "asc";
+        } else {
+          sortKey = key;
+          sortDir = "asc";
+        }
+        render();
+      });
+    });
+
+    document.getElementById("exportCsvBtn").addEventListener("click", () => {
+      const records = getFilteredRecords();
+      if (!records.length) {
+        statusBox.textContent = "내보낼 기록이 없습니다.";
+        return;
+      }
+      const header = ["이름", "번호", "학급", "제출시각", "정답수", `총문항(${TOTAL_QUESTIONS})`, "오개념개수", ...MISCONCEPTION_TAGS.map(t => t.label)];
+      const rows = records.map(r => [
+        r.name,
+        r.studentNumber,
+        r.className,
+        new Date(r.submittedAt).toLocaleString("ko-KR"),
+        r.correctCount,
+        TOTAL_QUESTIONS,
+        r.misconceptions.length,
+        ...MISCONCEPTION_TAGS.map(t => (r.misconceptions.includes(t.tag) ? "O" : ""))
+      ]);
+      const csvLines = [header, ...rows].map(row =>
+        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+      );
+      const csvContent = "﻿" + csvLines.join("\r\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `energy-misconception-results-${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+
+    function getFilteredRecords() {
+      const selectedClass = classFilterSelect.value;
+      const query = searchInput.value.trim().toLowerCase();
+      return allRecords.filter(r => {
+        const classOk = !selectedClass || selectedClass === "__all__" || (r.className || "학급 정보 없음") === selectedClass;
+        const nameOk = !query
+          || (r.name || "").toLowerCase().includes(query)
+          || (r.studentNumber || "").toLowerCase().includes(query);
+        return classOk && nameOk;
+      });
+    }
+
+    function populateClassFilter() {
+      const classes = Array.from(new Set(allRecords.map(r => r.className || "학급 정보 없음"))).sort();
+      const current = classFilterSelect.value || "__all__";
+      classFilterSelect.innerHTML = [
+        `<option value="__all__">전체 학급 (${allRecords.length}명)</option>`,
+        ...classes.map(c => {
+          const count = allRecords.filter(r => (r.className || "학급 정보 없음") === c).length;
+          return `<option value="${escapeHtml(c)}">${escapeHtml(c)} (${count}명)</option>`;
+        })
+      ].join("");
+      if (classes.includes(current) || current === "__all__") {
+        classFilterSelect.value = current;
+      }
+    }
+
+    function renderFreqGroup(elementId, category, records) {
+      const el = document.getElementById(elementId);
+      if (!records.length) {
+        el.innerHTML = '<div class="empty">아직 제출된 진단 기록이 없습니다.</div>';
+        return;
+      }
+      const freq = {};
+      records.forEach(r => r.misconceptions.forEach(tag => { freq[tag] = (freq[tag] || 0) + 1; }));
+      const items = MISCONCEPTION_TAGS
+        .filter(t => t.category === category)
+        .map(t => ({ label: t.label, count: freq[t.tag] || 0 }))
+        .sort((a, b) => b.count - a.count);
+
+      el.innerHTML = items.map(item => {
+        const percent = Math.round((item.count / records.length) * 100);
+        return `
+          <div class="freq-row">
+            <span>${escapeHtml(item.label)}</span>
+            <div class="freq-bar-track"><div class="freq-bar-fill" style="width:${percent}%"></div></div>
+            <span>${item.count}명 (${percent}%)</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderClassTable(records) {
+      const classes = Array.from(new Set(records.map(r => r.className || "학급 정보 없음"))).sort();
+      const body = document.getElementById("classTableBody");
+
+      if (!classes.length) {
+        body.innerHTML = `<tr><td colspan="4" class="empty">데이터가 없습니다.</td></tr>`;
+        return;
+      }
+
+      body.innerHTML = classes.map(className => {
+        const classRecords = records.filter(r => (r.className || "학급 정보 없음") === className);
+        const avg = classRecords.reduce((sum, r) => sum + r.correctCount, 0) / classRecords.length;
+        const freq = {};
+        classRecords.forEach(r => r.misconceptions.forEach(tag => { freq[tag] = (freq[tag] || 0) + 1; }));
+        const topTag = Object.entries(freq).sort((a, b) => b[1] - a[1])[0];
+        const topLabel = topTag
+          ? (MISCONCEPTION_TAGS.find(t => t.tag === topTag[0])?.label || topTag[0]) + ` (${topTag[1]}명)`
+          : "없음";
+
+        return `
+          <tr>
+            <td>${escapeHtml(className)}</td>
+            <td>${classRecords.length}명</td>
+            <td>${avg.toFixed(1)} / ${TOTAL_QUESTIONS}</td>
+            <td>${escapeHtml(topLabel)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderStudentTable(records) {
+      const body = document.getElementById("studentTableBody");
+      if (!records.length) {
+        body.innerHTML = `<tr><td colspan="7" class="empty">조건에 맞는 기록이 없습니다.</td></tr>`;
+        return;
+      }
+
+      const sorted = records.slice().sort((a, b) => {
+        let av = a[sortKey];
+        let bv = b[sortKey];
+        if (sortKey === "misconceptionCount") {
+          av = a.misconceptions.length;
+          bv = b.misconceptions.length;
+        } else if (sortKey === "studentNumber") {
+          av = Number(a.studentNumber) || 0;
+          bv = Number(b.studentNumber) || 0;
+        }
+        if (typeof av === "string") {
+          return sortDir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
+        }
+        return sortDir === "asc" ? av - bv : bv - av;
+      });
+
+      body.innerHTML = sorted.map(r => {
+        const isOpen = expandedId === r.id;
+        const tagsHtml = r.misconceptions.length
+          ? MISCONCEPTION_TAGS.filter(t => r.misconceptions.includes(t.tag))
+            .map(t => `<span class="tag-chip">${escapeHtml(t.label)}</span>`).join("")
+          : '<span class="tag-chip none">발견된 오개념 없음</span>';
+
+        const mainRow = `
+          <tr>
+            <td><button class="row-toggle" data-id="${r.id}">${isOpen ? "▾" : "▸"}</button></td>
+            <td>${escapeHtml(r.name || "이름 없음")}</td>
+            <td>${escapeHtml(r.studentNumber || "-")}</td>
+            <td>${escapeHtml(r.className || "학급 정보 없음")}</td>
+            <td>${r.correctCount} / ${TOTAL_QUESTIONS}</td>
+            <td>${r.misconceptions.length}개</td>
+            <td>${escapeHtml(new Date(r.submittedAt).toLocaleString("ko-KR"))}</td>
+          </tr>
+        `;
+        const detailRow = isOpen ? `
+          <tr class="detail-row">
+            <td></td>
+            <td colspan="6">${tagsHtml}</td>
+          </tr>
+        ` : "";
+        return mainRow + detailRow;
+      }).join("");
+
+      body.querySelectorAll(".row-toggle").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.id;
+          expandedId = expandedId === id ? null : id;
+          render();
+        });
+      });
+    }
+
+    function render() {
+      populateClassFilter();
+      const filtered = getFilteredRecords();
+
+      document.getElementById("statTotal").textContent = allRecords.length;
+      document.getElementById("statClasses").textContent =
+        new Set(allRecords.map(r => r.className || "학급 정보 없음")).size;
+      document.getElementById("lastUpdatedLabel").textContent = allRecords.length
+        ? `최근 제출: ${new Date([...allRecords].sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0].submittedAt).toLocaleString("ko-KR")}`
+        : "";
+
+      if (allRecords.length) {
+        const avg = allRecords.reduce((sum, r) => sum + r.correctCount, 0) / allRecords.length;
+        document.getElementById("statAvg").textContent = `${avg.toFixed(1)} / ${TOTAL_QUESTIONS}`;
+
+        const freq = {};
+        allRecords.forEach(r => r.misconceptions.forEach(tag => { freq[tag] = (freq[tag] || 0) + 1; }));
+        const top = Object.entries(freq).sort((a, b) => b[1] - a[1])[0];
+        document.getElementById("statTopMisconception").textContent = top
+          ? (MISCONCEPTION_TAGS.find(t => t.tag === top[0])?.label || top[0]) + ` (${top[1]}명)`
+          : "없음";
+      } else {
+        document.getElementById("statAvg").textContent = `0 / ${TOTAL_QUESTIONS}`;
+        document.getElementById("statTopMisconception").textContent = "-";
+      }
+
+      renderFreqGroup("freqQualitative", "qualitative", allRecords);
+      renderFreqGroup("freqQuantitative", "quantitative", allRecords);
+      renderClassTable(allRecords);
+      renderStudentTable(filtered);
+    }
+  </script>
+</body>
+
+</html>
