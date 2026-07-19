@@ -989,6 +989,7 @@
               </label>
             `).join("")}
           </div>
+          <button class="btn btn-primary feedback-submit" type="button" data-index="${index}" disabled style="margin-top:14px;">제출</button>
           <div class="small feedback-explain hidden" style="margin-top:12px;"></div>
         </div>
       `).join("");
@@ -996,24 +997,42 @@
       container.querySelectorAll(".option").forEach(optionEl => {
         optionEl.addEventListener("click", () => {
           const qIndex = Number(optionEl.dataset.feedbackIndex);
-          const optIndex = Number(optionEl.dataset.optionIndex);
-          const q = questions[qIndex];
           const card = container.querySelector(`.question-card[data-index="${qIndex}"]`);
 
-          card.querySelectorAll(".option").forEach(el => {
-            el.classList.remove("selected");
-            el.style.borderColor = "";
-            el.style.background = "";
-          });
-
+          card.querySelectorAll(".option").forEach(el => el.classList.remove("selected"));
           optionEl.classList.add("selected");
+          card.querySelector(".feedback-submit").disabled = false;
+        });
+      });
+
+      container.querySelectorAll(".feedback-submit").forEach(submitBtn => {
+        submitBtn.addEventListener("click", () => {
+          const qIndex = Number(submitBtn.dataset.index);
+          const q = questions[qIndex];
+          const card = container.querySelector(`.question-card[data-index="${qIndex}"]`);
+          const selectedEl = card.querySelector(".option.selected");
+          if (!selectedEl) return;
+
+          const optIndex = Number(selectedEl.dataset.optionIndex);
           const isCorrect = optIndex === q.correctIndex;
-          optionEl.style.borderColor = isCorrect ? "var(--success)" : "var(--danger)";
-          optionEl.style.background = isCorrect ? "var(--success-bg)" : "#fbe8e5";
+
+          card.querySelectorAll(".option").forEach(el => {
+            el.style.pointerEvents = "none";
+            if (Number(el.dataset.optionIndex) === q.correctIndex) {
+              el.style.borderColor = "var(--success)";
+              el.style.background = "var(--success-bg)";
+            } else if (el === selectedEl) {
+              el.style.borderColor = "var(--danger)";
+              el.style.background = "#fbe8e5";
+            }
+          });
 
           const explainEl = card.querySelector(".feedback-explain");
           explainEl.classList.remove("hidden");
           explainEl.innerHTML = `<b>${isCorrect ? "정답입니다!" : "다시 생각해 보세요."}</b> ${escapeHtml(q.explanation)}`;
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = "제출 완료";
 
           feedbackResults[q.tag] = isCorrect;
           updateDoc(doc(db, SUBMISSIONS_COLLECTION, recordId), { feedbackResults }).catch(() => {

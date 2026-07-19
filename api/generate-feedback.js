@@ -6,7 +6,7 @@ const GROQ_MODEL = "llama-3.3-70b-versatile";
 
 function buildPrompt(misconceptions) {
   const list = misconceptions
-    .map((m, i) => `${i + 1}. [tag: ${m.tag}] ${m.label} (참고: ${m.framework})`)
+    .map((m, i) => `${i + 1}. [tag: ${m.tag}] ${m.label}`)
     .join("\n");
 
   return `당신은 중학교 과학(에너지 단원) 교사입니다. 다음은 한 학생이 에너지 오개념 진단에서 실제로 보인 오개념 목록입니다:
@@ -19,7 +19,7 @@ ${list}
 - correctIndex는 정답 보기의 0부터 시작하는 인덱스입니다.
 - explanation에는 왜 그것이 정답인지, 그리고 왜 나머지 보기가 오개념인지 1~2문장으로 설명하세요.
 - 각 문제의 tag 값은 입력받은 오개념의 tag 값과 정확히 동일해야 합니다.
-- 모든 문장은 한국 중학생이 이해하기 쉬운 자연스러운 한국어로 작성하세요.
+- question, options, explanation은 반드시 순수한 한글 문장으로만 작성하세요. 영어 단어, 로마자 표기, 학자 이름이나 연도 같은 인용 표시를 절대 포함하지 마세요. 꼭 필요한 경우가 아니면 괄호 속 영어 용어도 쓰지 마세요.
 
 다음 JSON 형식으로만 답하세요. 다른 설명이나 마크다운 없이 순수 JSON만 출력하세요:
 {
