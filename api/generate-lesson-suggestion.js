@@ -42,9 +42,13 @@ function isValidSuggestion(data) {
     && data.activities.every(a => typeof a === "string");
 }
 
-// 3자 이상 이어지는 로마자 문자열을 "영어가 섞였다"는 신호로 간주 (단위 표기 kg, cm 등은 2자라 걸리지 않음)
+// 한글 음절/자모, 숫자, 공백, 기본 문장부호 외의 문자(영어, 일본어, 중국어 등 모든 외국어 문자)가
+// 하나라도 있으면 외국어가 섞인 것으로 간주한다. 허용 문자만 나열하는 화이트리스트 방식이라
+// 라틴 문자만 걸러내던 이전 방식과 달리 일본어·중국어 등도 함께 잡아낸다.
+const NON_KOREAN_CHAR = /[^가-힣ㄱ-ㆎ\s0-9.,!?()~%'"·×÷=+\-–—:;\/²³°]/u;
+
 function hasForeignText(value) {
-  if (typeof value === "string") return /[A-Za-z]{3,}/.test(value);
+  if (typeof value === "string") return NON_KOREAN_CHAR.test(value);
   if (Array.isArray(value)) return value.some(hasForeignText);
   if (value && typeof value === "object") return Object.values(value).some(hasForeignText);
   return false;
