@@ -616,7 +616,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import {
-      getFirestore, collection, addDoc
+      getFirestore, collection, addDoc, doc, updateDoc
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     // 교사용 분석 페이지(energy-misconceptions-teacher.html)와 반드시 동일한 값을 사용하세요.
@@ -763,7 +763,8 @@
     const answers = new Array(QUESTIONS.length).fill(null); // "misconception" | "correct"
 
     async function submitRecord(record) {
-      await addDoc(collection(db, SUBMISSIONS_COLLECTION), record);
+      const docRef = await addDoc(collection(db, SUBMISSIONS_COLLECTION), record);
+      return docRef.id;
     }
 
     function escapeHtml(value) {
@@ -866,7 +867,7 @@
       nextBtn.textContent = "저장 중...";
 
       try {
-        await submitRecord(record);
+        record.id = await submitRecord(record);
       } catch (error) {
         alert("결과를 저장하는 중 오류가 발생했습니다. 인터넷 연결과 Firebase 설정을 확인하고 다시 시도해 주세요.\n" + error.message);
         nextBtn.disabled = false;
@@ -965,15 +966,16 @@
         }
 
         statusBox.textContent = "";
-        renderFeedbackQuestions(data.questions, misconceptionPayload);
+        renderFeedbackQuestions(data.questions, misconceptionPayload, record.id);
       } catch (error) {
         statusBox.textContent = "맞춤 문제를 불러오지 못했습니다. (이 기능은 Vercel에 배포된 상태에서만 동작합니다) " + error.message;
       }
     }
 
-    function renderFeedbackQuestions(questions, misconceptionPayload) {
+    function renderFeedbackQuestions(questions, misconceptionPayload, recordId) {
       const container = document.getElementById("feedbackQuestions");
       const labelByTag = Object.fromEntries(misconceptionPayload.map(m => [m.tag, m.label]));
+      const feedbackResults = {};
 
       container.innerHTML = questions.map((q, index) => `
         <div class="question-card" data-index="${index}" style="margin-top:14px;">
@@ -1012,6 +1014,11 @@
           const explainEl = card.querySelector(".feedback-explain");
           explainEl.classList.remove("hidden");
           explainEl.innerHTML = `<b>${isCorrect ? "정답입니다!" : "다시 생각해 보세요."}</b> ${escapeHtml(q.explanation)}`;
+
+          feedbackResults[q.tag] = isCorrect;
+          updateDoc(doc(db, SUBMISSIONS_COLLECTION, recordId), { feedbackResults }).catch(() => {
+            // 피드백 교정 결과 저장에 실패해도 학생 화면 흐름은 막지 않음
+          });
         });
       });
     }

@@ -316,17 +316,30 @@
       border-bottom: none;
     }
 
-    tbody tr.detail-row {
-      background: #fdf8ec;
+    .cell-wrong,
+    .cell-ok,
+    .cell-corrected {
+      text-align: center;
+      font-weight: 700;
     }
 
-    tbody tr.detail-row td {
-      padding-top: 0;
+    .cell-wrong {
+      color: var(--danger);
+      background: #fdf1ef;
     }
 
-    .row-toggle {
+    .cell-ok {
+      color: var(--line);
+    }
+
+    .cell-corrected {
+      color: var(--success);
+      background: var(--success-bg);
+    }
+
+    .row-delete {
       cursor: pointer;
-      color: var(--brand-deep);
+      color: var(--danger);
       font-weight: 700;
       font-size: 13px;
       background: none;
@@ -334,25 +347,49 @@
       padding: 0;
     }
 
-    .tag-chip {
-      display: inline-flex;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: #fbe8e5;
-      color: var(--danger);
-      font-size: 12px;
-      font-weight: 700;
-      margin: 3px 4px 0 0;
-    }
-
-    .tag-chip.none {
-      background: var(--success-bg);
-      color: var(--success);
-    }
-
     .class-table td,
     .class-table th {
       padding: 10px 14px;
+    }
+
+    .cell-bar-track {
+      height: 8px;
+      border-radius: 999px;
+      background: #eee3d1;
+      overflow: hidden;
+      margin-top: 6px;
+      max-width: 160px;
+    }
+
+    .cell-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--brand));
+    }
+
+    .lesson-suggestion-card {
+      margin-top: 16px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: #fdf8ec;
+      border: 1px solid rgba(138, 98, 22, 0.25);
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--ink);
+    }
+
+    .lesson-suggestion-card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--brand-deep);
+    }
+
+    .lesson-suggestion-card ul {
+      margin: 6px 0 14px;
+      padding-left: 20px;
+    }
+
+    .lesson-suggestion-card p {
+      margin: 0 0 10px;
     }
 
     @media (max-width: 900px) {
@@ -412,6 +449,7 @@
 
         <div class="category-label">정량적 계산 오개념 <span class="hint">(Lawson &amp; McDermott, 1987 — 질량을 반영하지 못하는 계산 오류)</span></div>
         <div id="freqQuantitative"></div>
+
       </div>
 
       <div class="panel">
@@ -432,7 +470,16 @@
       </div>
 
       <div class="panel">
+        <h2>맞춤 수업 제안</h2>
+        <p class="hint" style="margin:0 0 14px;">선택한 학급의 오개념 분포를 바탕으로 AI가 다음 수업에서 무엇을 강조하면 좋을지 제안합니다.</p>
+        <button class="btn btn-primary" type="button" id="suggestLessonBtn">맞춤 수업 제안 받기</button>
+        <div class="status-box hidden" id="lessonStatus" style="margin-top:14px;"></div>
+        <div id="lessonSuggestion"></div>
+      </div>
+
+      <div class="panel">
         <h2>학생별 상세 기록</h2>
+        <p class="hint" style="margin:0 0 14px;">· 정확히 이해함　·　<span style="color:var(--danger);font-weight:700;">✕</span> 오개념(맞춤 문제 미교정)　·　<span style="color:var(--success);font-weight:700;">✓</span> 맞춤 문제로 교정됨</p>
         <div class="toolbar">
           <div class="toolbar-left">
             <select id="classFilter"></select>
@@ -446,15 +493,7 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th></th>
-                <th class="sortable" data-key="name">이름</th>
-                <th class="sortable" data-key="studentNumber">번호</th>
-                <th class="sortable" data-key="className">학급</th>
-                <th class="sortable" data-key="correctCount">정답 수</th>
-                <th class="sortable" data-key="misconceptionCount">오개념 수</th>
-                <th class="sortable" data-key="submittedAt">제출 시각</th>
-              </tr>
+              <tr id="studentTableHead"></tr>
             </thead>
             <tbody id="studentTableBody"></tbody>
           </table>
@@ -490,16 +529,16 @@
 
     // 학생용 페이지의 문항과 동일한 태그/분류. 문항 문구를 바꿔도 여기 목록은 그대로 두면 됩니다.
     const MISCONCEPTION_TAGS = [
-      { tag: "anthropocentric", label: "인간·생물 중심 오개념", category: "qualitative" },
-      { tag: "ingredient", label: "에너지 물질화(재료) 오개념", category: "qualitative" },
-      { tag: "force", label: "힘-에너지 혼동", category: "qualitative" },
-      { tag: "obvious-activity", label: "'뚜렷한 활동'으로서의 에너지 오개념", category: "qualitative" },
-      { tag: "product", label: "'찌꺼기(산물)'로서의 에너지 오개념", category: "qualitative" },
-      { tag: "conservation", label: "에너지 소멸(비보존) 오개념", category: "qualitative" },
-      { tag: "flow", label: "형태 변화 없는 '흐름' 오개념", category: "qualitative" },
-      { tag: "power", label: "에너지-전력(Power) 혼동", category: "qualitative" },
-      { tag: "pe-mass", label: "위치 에너지-질량 무시 오개념", category: "quantitative" },
-      { tag: "ke-mass", label: "운동 에너지-질량 무시 오개념", category: "quantitative" }
+      { tag: "anthropocentric", label: "인간·생물 중심 오개념", short: "생물중심", category: "qualitative" },
+      { tag: "ingredient", label: "에너지 물질화(재료) 오개념", short: "물질화", category: "qualitative" },
+      { tag: "force", label: "힘-에너지 혼동", short: "힘혼동", category: "qualitative" },
+      { tag: "obvious-activity", label: "'뚜렷한 활동'으로서의 에너지 오개념", short: "활동", category: "qualitative" },
+      { tag: "product", label: "'찌꺼기(산물)'로서의 에너지 오개념", short: "찌꺼기", category: "qualitative" },
+      { tag: "conservation", label: "에너지 소멸(비보존) 오개념", short: "소멸", category: "qualitative" },
+      { tag: "flow", label: "형태 변화 없는 '흐름' 오개념", short: "흐름", category: "qualitative" },
+      { tag: "power", label: "에너지-전력(Power) 혼동", short: "전력혼동", category: "qualitative" },
+      { tag: "pe-mass", label: "위치 에너지-질량 무시 오개념", short: "위치E·질량", category: "quantitative" },
+      { tag: "ke-mass", label: "운동 에너지-질량 무시 오개념", short: "운동E·질량", category: "quantitative" }
     ];
 
     function escapeHtml(value) {
@@ -529,9 +568,13 @@
 
     let allRecords = [];
     let unsubscribeSnapshot = null;
-    let sortKey = "submittedAt";
-    let sortDir = "desc";
-    let expandedId = null;
+    let sortKey = "className";
+    let sortDir = "asc";
+
+    function formatClassName(className) {
+      if (!className) return "학급 정보 없음";
+      return className.replace(/^2학년\s*/, "");
+    }
 
     document.getElementById("loginBtn").addEventListener("click", async () => {
       const id = teacherIdInput.value.trim();
@@ -604,6 +647,14 @@
     classFilterSelect.addEventListener("change", render);
     searchInput.addEventListener("input", render);
 
+    document.getElementById("studentTableHead").innerHTML = `
+      <th class="sortable" data-key="name">이름</th>
+      <th class="sortable" data-key="className">학급</th>
+      <th class="sortable" data-key="studentNumber">번호</th>
+      ${MISCONCEPTION_TAGS.map(t => `<th title="${escapeHtml(t.label)}">${escapeHtml(t.short)}</th>`).join("")}
+      <th></th>
+    `;
+
     document.querySelectorAll("th.sortable").forEach(th => {
       th.addEventListener("click", () => {
         const key = th.dataset.key;
@@ -623,15 +674,11 @@
         statusBox.textContent = "내보낼 기록이 없습니다.";
         return;
       }
-      const header = ["이름", "번호", "학급", "제출시각", "정답수", `총문항(${TOTAL_QUESTIONS})`, "오개념개수", ...MISCONCEPTION_TAGS.map(t => t.label)];
+      const header = ["이름", "번호", "학급", ...MISCONCEPTION_TAGS.map(t => t.label)];
       const rows = records.map(r => [
         r.name,
         r.studentNumber,
         r.className,
-        new Date(r.submittedAt).toLocaleString("ko-KR"),
-        r.correctCount,
-        TOTAL_QUESTIONS,
-        r.misconceptions.length,
         ...MISCONCEPTION_TAGS.map(t => (r.misconceptions.includes(t.tag) ? "O" : ""))
       ]);
       const csvLines = [header, ...rows].map(row =>
@@ -647,15 +694,93 @@
       URL.revokeObjectURL(url);
     });
 
-    function getFilteredRecords() {
+    document.getElementById("suggestLessonBtn").addEventListener("click", async () => {
+      const lessonStatusEl = document.getElementById("lessonStatus");
+      const lessonSuggestionEl = document.getElementById("lessonSuggestion");
+      const classScoped = getClassFilteredRecords();
+
+      lessonStatusEl.classList.remove("hidden");
+      lessonSuggestionEl.innerHTML = "";
+
+      if (!classScoped.length) {
+        lessonStatusEl.textContent = "제안을 만들 데이터가 없습니다.";
+        return;
+      }
+
       const selectedClass = classFilterSelect.value;
+      const className = (!selectedClass || selectedClass === "__all__") ? "전체 학급" : selectedClass;
+
+      const freq = {};
+      classScoped.forEach(r => r.misconceptions.forEach(tag => { freq[tag] = (freq[tag] || 0) + 1; }));
+      const misconceptions = MISCONCEPTION_TAGS
+        .map(t => ({ label: t.label, count: freq[t.tag] || 0, percent: Math.round(((freq[t.tag] || 0) / classScoped.length) * 100) }))
+        .filter(m => m.count > 0)
+        .sort((a, b) => b.count - a.count);
+
+      if (!misconceptions.length) {
+        lessonStatusEl.textContent = "이 학급은 발견된 오개념이 없어 제안할 내용이 없습니다.";
+        return;
+      }
+
+      const avgCorrect = (classScoped.reduce((sum, r) => sum + r.correctCount, 0) / classScoped.length).toFixed(1);
+
+      lessonStatusEl.textContent = "AI가 수업 제안을 만들고 있어요...";
+
+      try {
+        const response = await fetch("/api/generate-lesson-suggestion", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            className,
+            studentCount: classScoped.length,
+            avgCorrect,
+            totalQuestions: TOTAL_QUESTIONS,
+            misconceptions
+          })
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok) {
+          const detail = data?.detail || data?.error || "";
+          throw new Error(`서버 응답 오류 (${response.status})${detail ? " — " + detail : ""}`);
+        }
+        if (!data) throw new Error("서버 응답을 해석할 수 없습니다.");
+
+        lessonStatusEl.classList.add("hidden");
+        lessonSuggestionEl.innerHTML = `
+          <div class="lesson-suggestion-card">
+            <h3>${escapeHtml(className)} 요약</h3>
+            <p>${escapeHtml(data.summary)}</p>
+            <h3>우선 다뤄야 할 오개념</h3>
+            <ul>
+              ${data.priorities.map(p => `<li><b>${escapeHtml(p.label)}</b> — ${escapeHtml(p.suggestion)}</li>`).join("")}
+            </ul>
+            <h3>추천 수업 활동</h3>
+            <ul>
+              ${data.activities.map(a => `<li>${escapeHtml(a)}</li>`).join("")}
+            </ul>
+          </div>
+        `;
+      } catch (error) {
+        lessonStatusEl.classList.remove("hidden");
+        lessonStatusEl.textContent = "수업 제안을 불러오지 못했습니다. (이 기능은 Vercel에 배포된 상태에서만 동작합니다) " + error.message;
+      }
+    });
+
+    function getClassFilteredRecords() {
+      const selectedClass = classFilterSelect.value;
+      if (!selectedClass || selectedClass === "__all__") return allRecords;
+      return allRecords.filter(r => (r.className || "학급 정보 없음") === selectedClass);
+    }
+
+    function getFilteredRecords() {
       const query = searchInput.value.trim().toLowerCase();
-      return allRecords.filter(r => {
-        const classOk = !selectedClass || selectedClass === "__all__" || (r.className || "학급 정보 없음") === selectedClass;
+      return getClassFilteredRecords().filter(r => {
         const nameOk = !query
           || (r.name || "").toLowerCase().includes(query)
           || (r.studentNumber || "").toLowerCase().includes(query);
-        return classOk && nameOk;
+        return nameOk;
       });
     }
 
@@ -718,11 +843,16 @@
           ? (MISCONCEPTION_TAGS.find(t => t.tag === topTag[0])?.label || topTag[0]) + ` (${topTag[1]}명)`
           : "없음";
 
+        const percent = Math.round((avg / TOTAL_QUESTIONS) * 100);
+
         return `
           <tr>
             <td>${escapeHtml(className)}</td>
             <td>${classRecords.length}명</td>
-            <td>${avg.toFixed(1)} / ${TOTAL_QUESTIONS}</td>
+            <td>
+              ${avg.toFixed(1)} / ${TOTAL_QUESTIONS}
+              <div class="cell-bar-track"><div class="cell-bar-fill" style="width:${percent}%"></div></div>
+            </td>
             <td>${escapeHtml(topLabel)}</td>
           </tr>
         `;
@@ -731,80 +861,89 @@
 
     function renderStudentTable(records) {
       const body = document.getElementById("studentTableBody");
+      const colCount = 3 + MISCONCEPTION_TAGS.length + 1;
       if (!records.length) {
-        body.innerHTML = `<tr><td colspan="7" class="empty">조건에 맞는 기록이 없습니다.</td></tr>`;
+        body.innerHTML = `<tr><td colspan="${colCount}" class="empty">조건에 맞는 기록이 없습니다.</td></tr>`;
         return;
       }
 
       const sorted = records.slice().sort((a, b) => {
         let av = a[sortKey];
         let bv = b[sortKey];
-        if (sortKey === "misconceptionCount") {
-          av = a.misconceptions.length;
-          bv = b.misconceptions.length;
-        } else if (sortKey === "studentNumber") {
+        if (sortKey === "studentNumber") {
           av = Number(a.studentNumber) || 0;
           bv = Number(b.studentNumber) || 0;
         }
         if (typeof av === "string") {
-          return sortDir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
+          const result = sortDir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
+          if (result !== 0 || sortKey !== "className") return result;
+        } else {
+          const result = sortDir === "asc" ? av - bv : bv - av;
+          if (result !== 0) return result;
         }
-        return sortDir === "asc" ? av - bv : bv - av;
+        // 학급으로 정렬할 때는 같은 학급 안에서 번호 순으로 정렬
+        return (Number(a.studentNumber) || 0) - (Number(b.studentNumber) || 0);
       });
 
       body.innerHTML = sorted.map(r => {
-        const isOpen = expandedId === r.id;
-        const tagsHtml = r.misconceptions.length
-          ? MISCONCEPTION_TAGS.filter(t => r.misconceptions.includes(t.tag))
-            .map(t => `<span class="tag-chip">${escapeHtml(t.label)}</span>`).join("")
-          : '<span class="tag-chip none">발견된 오개념 없음</span>';
+        const tagCells = MISCONCEPTION_TAGS.map(t => {
+          const wrong = r.misconceptions.includes(t.tag);
+          if (!wrong) {
+            return `<td class="cell-ok" title="${escapeHtml(t.label)}">·</td>`;
+          }
+          const corrected = r.feedbackResults?.[t.tag];
+          if (corrected === true) {
+            return `<td class="cell-corrected" title="${escapeHtml(t.label)} — 맞춤 문제로 교정됨">✓</td>`;
+          }
+          const label = corrected === false
+            ? `${escapeHtml(t.label)} — 맞춤 문제도 틀림`
+            : `${escapeHtml(t.label)} — 맞춤 문제 미응답`;
+          return `<td class="cell-wrong" title="${label}">✕</td>`;
+        }).join("");
 
-        const mainRow = `
+        return `
           <tr>
-            <td><button class="row-toggle" data-id="${r.id}">${isOpen ? "▾" : "▸"}</button></td>
             <td>${escapeHtml(r.name || "이름 없음")}</td>
+            <td>${escapeHtml(formatClassName(r.className))}</td>
             <td>${escapeHtml(r.studentNumber || "-")}</td>
-            <td>${escapeHtml(r.className || "학급 정보 없음")}</td>
-            <td>${r.correctCount} / ${TOTAL_QUESTIONS}</td>
-            <td>${r.misconceptions.length}개</td>
-            <td>${escapeHtml(new Date(r.submittedAt).toLocaleString("ko-KR"))}</td>
+            ${tagCells}
+            <td><button class="row-delete" data-id="${r.id}" data-name="${escapeHtml(r.name || "이름 없음")}">삭제</button></td>
           </tr>
         `;
-        const detailRow = isOpen ? `
-          <tr class="detail-row">
-            <td></td>
-            <td colspan="6">${tagsHtml}</td>
-          </tr>
-        ` : "";
-        return mainRow + detailRow;
       }).join("");
 
-      body.querySelectorAll(".row-toggle").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const id = btn.dataset.id;
-          expandedId = expandedId === id ? null : id;
-          render();
-        });
+      body.querySelectorAll(".row-delete").forEach(btn => {
+        btn.addEventListener("click", () => deleteSingleRecord(btn.dataset.id, btn.dataset.name));
       });
+    }
+
+    async function deleteSingleRecord(id, name) {
+      if (!confirm(`${name} 학생의 진단 기록을 삭제할까요? 이 작업은 되돌릴 수 없습니다.`)) return;
+      try {
+        await deleteDoc(doc(db, SUBMISSIONS_COLLECTION, id));
+      } catch (error) {
+        statusBox.textContent = "삭제 중 오류가 발생했습니다: " + error.message;
+      }
     }
 
     function render() {
       populateClassFilter();
+      const classScoped = getClassFilteredRecords();
       const filtered = getFilteredRecords();
 
-      document.getElementById("statTotal").textContent = allRecords.length;
+      document.getElementById("statTotal").textContent = classScoped.length;
       document.getElementById("statClasses").textContent =
         new Set(allRecords.map(r => r.className || "학급 정보 없음")).size;
       document.getElementById("lastUpdatedLabel").textContent = allRecords.length
         ? `최근 제출: ${new Date([...allRecords].sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0].submittedAt).toLocaleString("ko-KR")}`
         : "";
 
-      if (allRecords.length) {
-        const avg = allRecords.reduce((sum, r) => sum + r.correctCount, 0) / allRecords.length;
+      if (classScoped.length) {
+        const avg = classScoped.reduce((sum, r) => sum + r.correctCount, 0) / classScoped.length;
         document.getElementById("statAvg").textContent = `${avg.toFixed(1)} / ${TOTAL_QUESTIONS}`;
 
         const freq = {};
-        allRecords.forEach(r => r.misconceptions.forEach(tag => { freq[tag] = (freq[tag] || 0) + 1; }));
+        classScoped.forEach(r => r.misconceptions.forEach(tag => { freq[tag] = (freq[tag] || 0) + 1; }));
         const top = Object.entries(freq).sort((a, b) => b[1] - a[1])[0];
         document.getElementById("statTopMisconception").textContent = top
           ? (MISCONCEPTION_TAGS.find(t => t.tag === top[0])?.label || top[0]) + ` (${top[1]}명)`
@@ -814,8 +953,8 @@
         document.getElementById("statTopMisconception").textContent = "-";
       }
 
-      renderFreqGroup("freqQualitative", "qualitative", allRecords);
-      renderFreqGroup("freqQuantitative", "quantitative", allRecords);
+      renderFreqGroup("freqQualitative", "qualitative", classScoped);
+      renderFreqGroup("freqQuantitative", "quantitative", classScoped);
       renderClassTable(allRecords);
       renderStudentTable(filtered);
     }
