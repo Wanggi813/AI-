@@ -950,11 +950,16 @@
           body: JSON.stringify({ misconceptions: misconceptionPayload })
         });
 
+        const data = await response.json().catch(() => null);
+
         if (!response.ok) {
-          throw new Error(`서버 응답 오류 (${response.status})`);
+          const detail = data?.detail || data?.error || "";
+          throw new Error(`서버 응답 오류 (${response.status})${detail ? " — " + detail : ""}`);
         }
 
-        const data = await response.json();
+        if (!data) {
+          throw new Error("서버 응답을 해석할 수 없습니다.");
+        }
         if (!Array.isArray(data.questions) || !data.questions.length) {
           throw new Error("문제를 생성하지 못했습니다.");
         }
